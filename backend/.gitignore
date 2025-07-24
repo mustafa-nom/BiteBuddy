@@ -1,3 +1,57 @@
-.venv
-services/.env
+# Python virtual environment
+.venv/
+venv/
+env/
+
+# Python bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables
 .env
+services/.env
+
+# macOS system files
+.DS_Store
+
+# Windows system files
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# VSCode
+.vscode/
+
+# JetBrains IDEs (PyCharm etc.)
+.idea/
+
+# Log files
+*.log
+
+# Test coverage
+.coverage
+coverage.xml
+htmlcov/
+
+# Build artifacts
+build/
+dist/
+*.egg-info/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints/
+
+# Mypy
+.mypy_cache/
+.dmypy.json
+
+# Pytest
+.pytest_cache/
+
+# Local SQLite or DB files
+*.sqlite3
+*.db
+
+# Node/npm
+node_modules/
