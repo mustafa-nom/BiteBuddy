@@ -10,7 +10,7 @@ recipes_bp = Blueprint('recipes', __name__)
 SPOON_API_KEY = os.getenv('SPOONACULAR_API_KEY')
 
 # get food recipes based on user's ingridient
-@recipes_bp.route('/recipes/by-ingredients')
+@recipes_bp.route('/by-ingredients')
 def get_recipes_by_ingredients(): 
     ingredients = request.args.get('ingredients')
     if not ingredients:
