@@ -14,7 +14,7 @@ export default function Recipe(){
             cookTime: '30 mins', 
             instructions: "Step 1: Do this Step 2: Do that", 
             neededIngredients: "Pasta, Tomato Sauce, Chicken",
-            img: "insert image url",
+            img: "https://www.willcookforsmiles.com/wp-content/uploads/2024/02/Chicken-Alfredo-in-the-pan-done-1024x1536.jpg",
             type: "Main Dish"
         }
     ];
@@ -33,7 +33,7 @@ export default function Recipe(){
 
     return(
         // Everything will be inside this container
-        <div className = "recipe-container">
+        <div className = "dashboard-container">
             
             {/* This will hold the title such as RECIPE*/}
             <div className = "recipe-header">
@@ -41,7 +41,7 @@ export default function Recipe(){
             </div>
 
             {/* This will hold the user input button and the recipes that are output */}
-            <div className = "recipe-content">
+            <div className = "recipe-container">
 
                 {/* The input box for the user */}
                 <div className = "input-box">
@@ -63,15 +63,15 @@ export default function Recipe(){
                     {/* Placeholder card for what a recipe will look like */}
                     <div className = "recipe-card">
                         {generatedRecipe.map (recipe => (
-                            <li key = {recipe.id} className = "recipe-card">
+                            <div key = {recipe.id} className = "recipe-card">
                                 <img src = {recipe.img}></img>
                                 <h3>{recipe.name}</h3>
                                 <h4>{recipe.type}</h4>
                                 <h4>{recipe.cookTime}</h4>
-                                <h4>{recipe.neededIngredients}</h4>
+                                <h4>Needed Ingredients: {recipe.neededIngredients}</h4>
                                 <p>{recipe.instructions}</p>
-                                <button className = "saveButton">Save Recipe</button>
-                            </li>
+                                <button className = "view-btn">Save Recipe</button>
+                            </div>
                         ))}
                     </div>
                 </div>
