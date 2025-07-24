@@ -266,6 +266,12 @@ body {
   padding-bottom: 1em;
 }
 
+.input-box input[type="text"] {
+  width: 350px; /* or any value you prefer */
+  max-width: 90%;
+  font-size: 1rem;
+}
+
 .recipe-card {
   margin: 0 auto;
   text-align: center;
