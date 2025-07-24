@@ -7,14 +7,14 @@ app = Flask(__name__)
 CORS(app)
 
 # -- Register Blueprints --
-app.register_blueprint(recipes_bp)
+app.register_blueprint(recipes_bp, url_prefix="/recipes")
 
 @app.route('/')
 def home():
     return {
         "message": "BiteBuddy works!",
         "endpoints": {
-            "" : ""
+            "recipes" : "recipes/by-ingredients?ingredients=flour,water"
         }
     }
 
