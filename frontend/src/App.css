@@ -1,0 +1,276 @@
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(135deg, #429edb 0%, #d45b5b 100%);
+}
+
+
+
+/* LOGIN PAGE */
+.login-container {
+  width: 320px;
+  padding: 2.5rem;
+  border-radius: 16px;
+  background: white;
+  text-align: center;
+}
+
+/* BiteBuddy text */
+.login-container h1 {
+  color: #2e7d32;
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: center; 
+}
+
+/* centered input fields */
+.login-container input {
+  width: 100%; 
+  max-width: 280px; 
+  padding: 0.75rem;
+  margin: 0.5rem 0;
+  border: 2px solid #82b286;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+  background-color: #f1f8e9;
+}
+
+.login-container input:focus {
+  outline: none;
+  border-color: #7cb342;
+  box-shadow: 0 0 0 3px rgba(124, 179, 66, 0.2);
+}
+
+/* centered login button */
+.login-container button {
+  width: 100%;
+  max-width: 280px; 
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: linear-gradient(to right, #8bc34a, #4caf50);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px rgba(76, 175, 80, 0.3);
+}
+
+.login-container button:hover {
+  background: linear-gradient(to right, #7cb342, #43a047);
+  transform: translateY(-2px);
+}
+
+/* food icons */
+.login-container form::after {
+  content: "🍽️ 🍎 🍊 🥕 🧑🏽‍🍳";
+  display: block;
+  font-size: 1.5rem;
+  margin-top: 1.5rem;
+  width: 100%;
+}
+
+
+
+
+/* DASHBOARD */
+/* box */
+.dashboard-container {
+  width: 100%;
+  max-width: 800px;
+  padding: 2rem;
+  border-radius: 16px;
+  background: rgba(221, 227, 229, 0.762);
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin: 50px 0;
+  text-align: left;
+}
+
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+}
+
+.dashboard-header h1 {
+  color: #19521c;
+  font-size: 2rem;
+  margin: 0;
+}
+
+/* My Recipes or Meal Plan */
+.dashboard-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  gap: 1rem;
+}
+
+.tab-btn {
+  padding: 1rem 2rem;
+  background: #e8f5e9;
+  color: #27722b;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.tab-btn.active {
+  background: #247526;
+  color: white;
+}
+
+.tab-btn:hover:not(.active) {
+  background: #d2d8d2;
+}
+
+
+.recipes-list ul, .meal-plan ul {
+  /* get rid of bullet point */
+  list-style: none;
+  padding: 0;
+}
+
+.recipe-item, .day-plan {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #28832b;
+}
+
+.meal-plan ul li {
+  color: #333;
+  font-weight: 500; 
+}
+
+.recipe-item h3, .day-plan h3 {
+  margin-top: 0;
+  color: #1a571d;
+}
+
+/* view recipe details */
+.view-btn {
+  padding: 0.5rem 1rem;
+  background: #8bc34a;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+}
+
+.view-btn:hover {
+  background: #38521d;
+}
+
+
+
+
+/* NAVBAR */
+.navbar {
+  padding: 1.6rem 2rem;
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+}
+
+.navbar-content {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 1.25rem;
+}
+
+/* BiteBuddy */
+.navbar-brand {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2e7d32;
+  margin-right: auto;
+}
+
+.navbar-links {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 2rem;
+}
+
+.navbar-links a {
+  padding: 0.8rem 1.2rem;
+  background: #ffffff;
+  color: #2e7d32;
+  border-radius: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: 1px solid #c8e6c9;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+.navbar-links a:hover {
+  background: #b0cae7;
+  color: #062b12;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  border-color: #a5d6a7;
+}
+
+.logout-btn {
+  padding: 0.5rem 1rem;
+  background: #f44336;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.logout-btn:hover {
+  background: #d32f2f;
+}
+
+
+
+
+
+/* DASHBOARD HEADER ANIMATION */
+.dashboard-header h1 {
+  background: linear-gradient(45deg, #ff8a00, #e52e71, #2575fc);
+  background-size: 300% 300%;
+  /* clip background to only show text shape */
+  -webkit-background-clip: text;
+  background-clip: text;
+  /* make text color transparent so only gradient show */
+  color: transparent;
+  /* movement */
+  animation: gradientShift 5s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
