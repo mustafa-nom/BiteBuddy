@@ -1,9 +1,13 @@
 from flask import Flask
 from flask_cors import CORS
 import os
+from routes.recipes import recipes_bp  
 
 app = Flask(__name__)
 CORS(app)
+
+# -- Register Blueprints --
+app.register_blueprint(recipes_bp)
 
 @app.route('/')
 def home():
@@ -13,3 +17,6 @@ def home():
             "" : ""
         }
     }
+
+if __name__ == "__main__":
+    app.run(debug=True)
