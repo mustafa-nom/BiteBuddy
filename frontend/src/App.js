@@ -1,42 +1,49 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.css';
 
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Fridge from './pages/Fridge'
+
 import Navbar from './components/Navbar'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-
   return (
     <Router>
-      
+
       {/* make sure navbar only shows when user is loggedin */}
-      {isLoggedIn && <Navbar onLogout={() => setIsLoggedIn(false)} />} 
+      {isLoggedIn && <Navbar onLogout={() => setIsLoggedIn(false)} />}
       <div className="app">
         <Routes>
-          <Route 
-            path= "/" 
-            element = {
+          <Route
+            path="/"
+            element={
               isLoggedIn ? (
                 <Navigate to="/dashboard" />
               ) : (
                 <Login onLogin={() => setIsLoggedIn(true)} />
               )
-            } 
-          />
-          <Route
-            path = "/dashboard"
-            element = {
-              <Dashboard/>
             }
           />
-    
+          <Route
+            path="/dashboard"
+            element={
+              <Dashboard />
+            }
+          />
+
+          <Route
+            path="/fridge"
+            element={
+              <Fridge />
+            }
+          />
+
         </Routes>
-        
+
       </div>
     </Router>
   );
