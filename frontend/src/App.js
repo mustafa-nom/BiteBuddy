@@ -5,6 +5,7 @@ import './App.css';
 
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Recipe from './pages/Recipes'
 import Fridge from './pages/Fridge'
 
 import Navbar from './components/Navbar'
@@ -41,6 +42,14 @@ function App() {
               <Fridge />
             }
           />
+
+          <Route
+            path = "/recipes"
+            element = {
+              <Recipe/>
+            }
+          />
+    
 
         </Routes>
 
