@@ -9,6 +9,7 @@ import Navbar from './components/Navbar'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState(null);
 
 
   return (
