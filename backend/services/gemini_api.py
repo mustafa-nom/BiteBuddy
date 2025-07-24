@@ -35,7 +35,7 @@ def get_recipe_from_mood(mood_txt):
     response = model.generate_content(mood_txt)
     print(response.text.strip())
     raw_text = response.text.strip()
-    recipe_names = [items.strip for item in raw.text.split(',') if item.strip()]
+    recipe_names = [item.strip() for item in raw_text.split(',') if item.strip()]
     print (recipe_names)
     return recipe_names
 
