@@ -11,7 +11,14 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState(null);
 
-
+const handleLogin = (username) => {
+  setCurrentUser(username);
+  setIsLoggedIn(true);
+};
+const handleLogout = () => {
+  setCurrentUser(null);
+  setIsLoggedIn(false);
+};
   return (
     <Router>
       
@@ -25,14 +32,18 @@ function App() {
               isLoggedIn ? (
                 <Navigate to="/dashboard" />
               ) : (
-                <Login onLogin={() => setIsLoggedIn(true)} />
+                // <Login onLogin={() => setIsLoggedIn(true)} />
+                <Login onLogin={handleLogin} />
               )
             } 
           />
           <Route
             path = "/dashboard"
             element = {
-              <Dashboard/>
+              isLoggedIn ?
+              <Dashboard username={currentUser}/>
+              :
+              <Navigate to="/" />
             }
           />
     

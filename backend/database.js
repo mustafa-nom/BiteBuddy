@@ -2,13 +2,13 @@
 // functions needed from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {getFirestore, collection, addDoc, getDoc, setDoc} from 'firebase/firestore';
+import {getFirestore, collection, addDoc, getDocs, doc, getDoc, setDoc} from 'firebase/firestore';
 import 'dotenv/config'; 
-import {
-  doc, deleteDoc,
-  updateDoc, deleteField, arrayRemove,
-  writeBatch, 
-} from 'firebase/firestore';
+// import {
+//   doc, deleteDoc,
+//   updateDoc, deleteField, arrayRemove,
+//   writeBatch, 
+// } from 'firebase/firestore';
 
 
 const firebaseConfig = {
@@ -27,21 +27,6 @@ const app = initializeApp(firebaseConfig);
 //const analytics = getAnalytics(app);
 const db = getFirestore(app);
 
-
-async function getRecipes() {
-  try {
-    const querySnapshot = await getDoc(collection(db, 'pizza'));
-    const recipes = [];
-    querySnapshot.forEach((doc) => {
-    recipes.push({ id: doc.id, ...doc.data() });
-    });
-    return recipes;
-  }
-  catch (err) {
-    console.error("Error getting the recipes: ", err);
-    return [];
-  }
-}
 
 export async function addUserLogin(username) {
   try {
@@ -96,9 +81,9 @@ export async function addRecipe(username, recipe) {
   }
 }
 
-export async function getRecipe(username) {
+export async function getRecipes(username) {
   try {
-    const querySnapshot = await getDoc(collection(db, 'users', username, 'recipes'));
+    const querySnapshot = await getDocs(collection(db, 'users', username, 'recipes'));
     const recipes = [];
     querySnapshot.forEach((doc) => {
       recipes.push({ id: doc.id, ...doc.data() });
@@ -115,13 +100,13 @@ export async function getRecipe(username) {
 
 
 
-// test run 
-(async () => {
-  // comment‑out after first run if you don’t want duplicates
-  await addRecipe();
+// // test run 
+// (async () => {
+//   // comment‑out after first run if you don’t want duplicates
+//   await addRecipe();
 
-  const pizzas = await getRecipes();
-  console.table(pizzas);   
+//   const pizzas = await getRecipes();
+//   console.table(pizzas);   
 
-  process.exit(0);         
-})();
+//   process.exit(0);         
+// })();
