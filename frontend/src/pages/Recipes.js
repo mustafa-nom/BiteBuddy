@@ -40,22 +40,23 @@ export default function Recipe(){
                 <h1>Recipes</h1>
             </div>
 
+            {/* The input box for the user */}
+            <div className = "input-box">
+                <form onSubmit={handleSubmit}>
+                    <input
+                    type="text"
+                    placeholder="What are you in the mood for today? 🍕🥞🍖🍣"
+                    value={textInput}
+                    onChange={(e) => setTextInput(e.target.value)}
+                    />
+                    <button type = "submit">🥄</button>
+                </form>
+            </div>
+            
             {/* This will hold the user input button and the recipes that are output */}
             <div className = "recipe-container">
 
-                {/* The input box for the user */}
-                <div className = "input-box">
-                    <form onSubmit={handleSubmit}>
-                        <input
-                        type="text"
-                        placeholder="What are you in the mood for today? 🍕🥞🍖🍣"
-                        value={textInput}
-                        onChange={(e) => setTextInput(e.target.value)}
-                        />
-                        <button type = "submit">🥄</button>
-                    </form>
-                    
-                </div>
+ 
 
                 {/* This is where are the generated recipes will go */}
                 <div className = "generated-recipes">
