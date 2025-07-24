@@ -5,6 +5,7 @@ import './App.css';
 
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Recipe from './pages/Recipes'
 import Navbar from './components/Navbar'
 
 function App() {
@@ -32,6 +33,13 @@ function App() {
             path = "/dashboard"
             element = {
               <Dashboard/>
+            }
+          />
+
+          <Route
+            path = "/recipes"
+            element = {
+              <Recipe/>
             }
           />
     
