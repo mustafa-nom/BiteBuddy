@@ -38,6 +38,7 @@ export default function Recipe(){
             {/* This will hold the title such as RECIPE*/}
             <div className = "recipe-header">
                 <h1>Recipes</h1>
+                <p>Generate a recipe based on your mood</p>
             </div>
 
             {/* The input box for the user */}
@@ -62,7 +63,7 @@ export default function Recipe(){
                 <div className = "generated-recipes">
 
                     {/* Placeholder card for what a recipe will look like */}
-                    <div className = "recipe-card">
+                    
                         {generatedRecipe.map (recipe => (
                             <div key = {recipe.id} className = "recipe-card">
                                 <img src = {recipe.img}></img>
@@ -78,7 +79,7 @@ export default function Recipe(){
                                 
                             </div>
                         ))}
-                    </div>
+                    
                 </div>
             </div>
         </div>

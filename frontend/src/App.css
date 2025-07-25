@@ -273,14 +273,19 @@ body {
 }
 
 .recipe-container {
-  width: 80%;
+  width: 50%;
   margin: 0 auto;
   text-align: center;
+  flex: 1 1 300px;
+  display: flex;
+}
+
+.recipe-card{
   border: 4px solid rgba(0,0,0,0.5);
   padding:20px;
   border-radius: 12px;
+  margin: 20px;
 }
-
 .recipe-card h4{
   opacity: 0.7;
   padding: 0em;
@@ -549,6 +554,33 @@ body {
   border-style: solid;
 }
 
+
+/* Meal Plan Page */
+.day-container{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mealplan-container{
+  width: 100%;
+  max-width: 1500px;
+  padding: 2rem;
+  border-radius: 16px;
+  background: rgba(221, 227, 229, 0.762);
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin: 50px 0;
+  text-align: left;
+  align-items: stretch;
+}
+
+.day-header{
+  border-bottom: 2px solid rgba(0,0,0,0.8);
+
+}
+.center-btn{
+  text-align: center;
+}
 #topline {
   margin-top: 60px;
 }
