@@ -280,6 +280,7 @@ body {
 
 
 
+
 /* MY FRIDGE PAGE */
 .fridge-container {
   width: 100%;
@@ -304,6 +305,7 @@ body {
   width: 50%;
   display: flex;
   flex-direction: column;
+  min-height: 100%; 
 }
 
 /* left column where user adds ingredients */
@@ -318,7 +320,7 @@ body {
 /* right column displaying user's fridge */
 .fridge-display-column {
   position: relative;
-  background: white;
+  background: #f8f8f8;
   padding: 1.5rem;
   border-radius: 12px;
   border: 1px solid #e0e0e0;
@@ -352,7 +354,7 @@ body {
   border-bottom: 1px solid #e0e0e0;
 }
 
-.fridge-presets {
+.fridge-presets, .dietary-presets {
   display: grid;
   /* display common ingredients in grid format */
   grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
@@ -370,6 +372,11 @@ body {
   transition: all 0.2s ease;
   font-size: 0.9rem;
   text-align: center;
+}
+
+.fridge-preset-btn:hover {
+  background: #b3e48e;
+  transform: translateY(-2px);
 }
 
 .fridge-preset-btn:disabled {
@@ -503,7 +510,7 @@ body {
 }
 
 #bottomline {
-  margin-bottom: 70%;
+  margin-bottom: 30%;
 }
 
 
@@ -513,7 +520,8 @@ body {
 #fridge-bottom.door-open {
   transform: perspective(80rem) rotateY(95deg);
   box-shadow: -10px 0 15px rgba(0, 0, 0, 0.2);
-  z-index: 10; /* ensure it appears above other elements when open */
+  /* ensure it appears above other elements when open */
+  z-index: 10; 
 }
 
 
@@ -529,7 +537,7 @@ body {
 
 .fridge-body {
   position: relative;
-  min-height: 300px;
+  min-height: 400px;
   width: 98%;
   border-color: rgb(77, 77, 77);
   border-width: 5px;
@@ -583,6 +591,8 @@ body {
   padding-top: 5px; /* accounts for first item's top position */
 }
 
+
+
 .fridge-shelves::before {
   content: "";
   position: absolute;
@@ -600,4 +610,48 @@ body {
   );
   z-index: 1;
   pointer-events: none;
+}
+
+
+
+
+/* DIET BUTTONS */
+.dietary-preset-btn {
+  padding: 0.6rem;
+  background: #e8f5e9;
+  color: #2e7d32;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+.dietary-preset-btn:disabled {
+  background: #f5f5f5;
+  color: #bdbdbd;
+  cursor: not-allowed;
+}
+
+#diet-header {
+  margin-top:30px;
+}
+
+
+.dietary-preset-btn.selected {
+    background: #4caf50;
+    color: white;
+    font-weight: 600;
+}
+
+.dietary-preset-btn.selected:hover {
+    background: #388e3c;
+    transform: translateY(-2px);
+}
+
+
+.dietary-preset-btn:not(.selected):hover {
+    background: #b3ee8c;
+    transform: translateY(-2px);
 }

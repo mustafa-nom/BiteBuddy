@@ -7,12 +7,26 @@ export default function Fridge() {
     // manual inputted ingredients
     const [customIngredient, setCustomIngredient] = useState('');
     const [isDoorOpen, setIsDoorOpen] = useState(false);
+    // dietary restrictions
+    const [diets, setDiet] = useState([]);
 
 
     const commonIngredients = [
         'Potatoes', 'Eggs', 'Tomatoes', 'Apples', 'Olive Oil', 'Lettuce', 'Cucumbers', 'Bell Peppers', 'Chicken', 'Celery', 'Bread', 'Tofu'
     ]
 
+    const dietaryRestrictions = [
+        'Vegitarian', 'Vegan', 'Halal', 'Kosher', 'Gluten-Free', 'Pescetarian'
+    ]
+
+    const handleAddDiet = (diet) => {
+        if (diets.includes(diet)) {
+            setDiet(diets.filter(d => d !== diet));
+        }
+        else {
+            setDiet(diets.concat(diet))
+        }
+    }
 
     // if ingredient isn't already in the fridge, add it to ingredients array
     const handleAddCommonIngredient = (ingredient) => {
@@ -71,6 +85,19 @@ export default function Fridge() {
                                 </button>
                             ))}
                         </div>
+                        {/* common dietary restrictions */}
+                        <h2 id="diet-header">Add Dietary Restrictions</h2>
+                        <div className="dietary-presets">
+                            {dietaryRestrictions.map((diet, index) => (
+                                <button
+                                    key={index}
+                                    className={`dietary-preset-btn ${diets.includes(diet) ? 'selected' : ''}`}
+                                    onClick={() => handleAddDiet(diet)}
+                                >
+                                    {diet}
+                                </button>
+                            ))}
+                        </div>
 
 
                     </div>
@@ -99,10 +126,6 @@ export default function Fridge() {
                         <h2> My Fridge </h2>
                         <div id="topline" class="vertical-line"></div>
                     </div>
-
-
-
-
                     <div className="fridge-body">
 
                         <div
