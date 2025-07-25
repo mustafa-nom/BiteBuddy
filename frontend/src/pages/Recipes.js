@@ -71,7 +71,11 @@ export default function Recipe(){
                                 <h4>{recipe.cookTime}</h4>
                                 <h4>Needed Ingredients: {recipe.neededIngredients}</h4>
                                 <p>{recipe.instructions}</p>
-                                <button className = "view-btn">Save Recipe</button>
+                                <div className = "button-list">
+                                    <button className = "view-btn">Save Recipe</button>
+                                    <button className = "view-btn">Shuffle Recipe</button>
+                                </div>
+                                
                             </div>
                         ))}
                     </div>
