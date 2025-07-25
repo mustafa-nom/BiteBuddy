@@ -20,8 +20,12 @@ export default function Login({ onLogin }) {
 
     return (
         <div className="login-container">
-            <form onSubmit={handleSubmit}>
+            <div className="login-header">
                 <h1>BiteBuddy</h1>
+                <p> Welcome to BiteBuddy - your personal food companion! </p>
+                <p> Discover recipes, customized meal plans, and find nutritional information. </p>
+            </div>
+            <form onSubmit={handleSubmit}>
 
                 <input
                     type="text"

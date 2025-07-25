@@ -83,12 +83,12 @@ export default function Dashboard({ username }) {
 
                     </div>
                 ) : (
-                    // later on, perhaps link user to recipe for each meal in meal plan
+                    // later on, perhaps link user to recipe for each meal in meal
                     <div className="meal-plan">
                         <h2>This Week's Meal Plan</h2>
                         {mealPlan.map ( day => (
                             // use day as index for map
-                            <div key={day.day} className="day-plan">
+                            <div key = {day.day} className="day-plan">
                                 <h3>{day.day}</h3>
                                 <ul>
                                     {day.meals.map ( (meal, index) => (

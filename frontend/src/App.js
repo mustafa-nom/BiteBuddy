@@ -1,10 +1,13 @@
 import { useState } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate} from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 
 import './App.css';
 
 import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
+import Recipe from './pages/Recipes'
+import Fridge from './pages/Fridge'
+
 import Navbar from './components/Navbar'
 
 function App() {
@@ -21,21 +24,21 @@ const handleLogout = () => {
 };
   return (
     <Router>
-      
+
       {/* make sure navbar only shows when user is loggedin */}
-      {isLoggedIn && <Navbar onLogout={() => setIsLoggedIn(false)} />} 
+      {isLoggedIn && <Navbar onLogout={() => setIsLoggedIn(false)} />}
       <div className="app">
         <Routes>
-          <Route 
-            path= "/" 
-            element = {
+          <Route
+            path="/"
+            element={
               isLoggedIn ? (
                 <Navigate to="/dashboard" />
               ) : (
                 // <Login onLogin={() => setIsLoggedIn(true)} />
                 <Login onLogin={handleLogin} />
               )
-            } 
+            }
           />
           <Route
             path = "/dashboard"
@@ -46,9 +49,24 @@ const handleLogout = () => {
               <Navigate to="/" />
             }
           />
+
+          <Route
+            path = "/recipes"
+            element = {
+              <Recipe/>
+            }
+          />
+
+          <Route
+            path = "/fridge"
+            element = {
+              <Fridge/>
+            }
+          />
     
+
         </Routes>
-        
+
       </div>
     </Router>
   );
