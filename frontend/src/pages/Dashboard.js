@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getUserData } from '../backend/database.js';
+import { getUserData } from '../database.js';
 export default function Dashboard({ username }) {
     // state to check which tab is active. we start by looking at user's saved recipes.
     const [activeTab, setActiveTab] = useState('recipes');
