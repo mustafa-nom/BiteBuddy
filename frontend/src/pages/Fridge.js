@@ -1,14 +1,32 @@
 import { useState } from 'react';
 
+
 export default function Fridge() {
     // array to hold ingredients in users fridge
     const [ingredients, setIngredients] = useState([]);
     // manual inputted ingredients
     const [customIngredient, setCustomIngredient] = useState('');
+    const [isDoorOpen, setIsDoorOpen] = useState(false);
+    // dietary restrictions
+    const [diets, setDiet] = useState([]);
+
 
     const commonIngredients = [
         'Potatoes', 'Eggs', 'Tomatoes', 'Apples', 'Olive Oil', 'Lettuce', 'Cucumbers', 'Bell Peppers', 'Chicken', 'Celery', 'Bread', 'Tofu'
     ]
+
+    const dietaryRestrictions = [
+        'Vegitarian', 'Vegan', 'Halal', 'Kosher', 'Gluten-Free', 'Pescetarian'
+    ]
+
+    const handleAddDiet = (diet) => {
+        if (diets.includes(diet)) {
+            setDiet(diets.filter(d => d !== diet));
+        }
+        else {
+            setDiet(diets.concat(diet))
+        }
+    }
 
     // if ingredient isn't already in the fridge, add it to ingredients array
     const handleAddCommonIngredient = (ingredient) => {
@@ -17,19 +35,29 @@ export default function Fridge() {
         }
     };
 
+
     // if custom ingredient is not already in ingredients, add it to array
     const handleAddCustomIngredient = (e) => {
         e.preventDefault();
         if (customIngredient.trim() && !ingredients.includes(customIngredient)) {
             setIngredients(ingredients.concat(customIngredient))
-            setCustomIngredient(''); // reset 
+            setCustomIngredient(''); // reset
         }
     };
+
 
     // filter out specific ingredient from ingredient array
     const handleRemoveIngredient = (ingredientToRemove) => {
         setIngredients(ingredients.filter(ing => ing !== ingredientToRemove));
     };
+
+
+    const toggleDoor = () => {
+        setIsDoorOpen(!isDoorOpen);
+    };
+
+
+
 
     return (
         <div className="fridge-container">
@@ -37,6 +65,7 @@ export default function Fridge() {
                 <h1>Ingredients</h1>
                 <p>Track what ingredients you have available</p>
             </div>
+
 
             <div className="fridge-columns">
                 {/* left column - add ingredients*/}
@@ -56,8 +85,23 @@ export default function Fridge() {
                                 </button>
                             ))}
                         </div>
+                        {/* common dietary restrictions */}
+                        <h2 id="diet-header">Add Dietary Restrictions</h2>
+                        <div className="dietary-presets">
+                            {dietaryRestrictions.map((diet, index) => (
+                                <button
+                                    key={index}
+                                    className={`dietary-preset-btn ${diets.includes(diet) ? 'selected' : ''}`}
+                                    onClick={() => handleAddDiet(diet)}
+                                >
+                                    {diet}
+                                </button>
+                            ))}
+                        </div>
+
 
                     </div>
+
 
                     <div className="fridge-section">
                         <h2> Add Custom Ingredient </h2>
@@ -75,34 +119,53 @@ export default function Fridge() {
                     </div>
                 </div>
 
+
                 {/* right column - saved ingredients that are in user's fridge */}
                 <div className="fridge-column fridge-display-column">
                     <div id="fridge-top" className="fridge-section">
                         <h2> My Fridge </h2>
                         <div id="topline" class="vertical-line"></div>
                     </div>
-                    <div id="fridge-bottom" className="fridge-section">
-                        <div id="bottomline" class="vertical-line"></div>
-                        {ingredients.length > 0 ? (
-                            <ul className="fridge-items">
-                                {/* iterate through all ingredients in user's fridge and display */}
-                                {ingredients.map((ingredient, index) => (
-                                    <li key={index} className="fridge-item">
-                                        {ingredient}
-                                        <button
-                                            onClick={() => handleRemoveIngredient(ingredient)}
-                                            className="fridge-remove-btn"
-                                        >X</button>
-                                    </li>
-                                ))}
-                            </ul>
-                        ) : (
-                            <p>Your fridge is empty. Add some ingredients!</p>
-                        )}
+                    <div className="fridge-body">
+
+                        <div
+                            id="fridge-bottom"
+                            className={`fridge-section fridge-door ${isDoorOpen ? 'door-open' : ''}`}
+                            onClick={toggleDoor}
+                        >
+                            <div id="bottomline" className="vertical-line"></div>
+                        </div>
+                        <div className="fridge-interior">
+                            <div className="fridge-shelves">
+                                {ingredients.length > 0 ? (
+                                    <ul className="fridge-items">
+                                        {ingredients.map((ingredient, index) => (
+                                            <li key={index} className="fridge-item">
+                                                {ingredient}
+                                                <button
+                                                    onClick={(e) => {
+                                                        e.stopPropagation();
+                                                        handleRemoveIngredient(ingredient);
+                                                    }}
+                                                    className="fridge-remove-btn"
+                                                >X</button>
+                                            </li>
+                                        ))}
+                                    </ul>
+                                ) : (
+                                    <p>Your fridge is empty. Add some ingredients!</p>
+                                )}
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
             </div>
         </div>
-        
+
+
     );
 }
+
+
