@@ -16,7 +16,7 @@ system_instructions = {
     """,
 
     "goal_to_meal_plan": """
-        You are a nutrition coach. Based on the user's fitness goal (e.g., lose weight, gain muscle, maintain energy), generate a 1-day meal plan.
+        You are a nutrition coach. Based on the user's fitness goal (e.g., lose weight, gain muscle, maintain energy), generate a 7-day meal plan.
         Include breakfast, lunch, dinner, and snacks with brief ingredient lists. Prioritize balance and practicality.
     """,
 }
@@ -39,10 +39,10 @@ def get_recipe_from_mood(mood_txt):
     print (recipe_names)
     return recipe_names
 
-# create 1-day meal plan based on user goal
+# create 7-day meal plan based on user goal
 def generate_meal_plan(meal_plan_goal):
     model = get_model("goal_to_meal_plan")
-    prompt = f"Given my meal plan goal, create a full day meal plan: {meal_plan_goal}"
+    prompt = f"Given my meal plan goal, create a full week meal plan: {meal_plan_goal}"
     response = model.generate_content(prompt)
     raw_text = response.text.strip()
     print(raw_text)
