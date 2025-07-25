@@ -56,6 +56,13 @@ const handleLogout = () => {
               <Recipe/>
             }
           />
+
+          <Route
+            path = "/fridge"
+            element = {
+              <Fridge/>
+            }
+          />
     
 
         </Routes>
