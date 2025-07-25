@@ -96,6 +96,21 @@ export async function getRecipes(username) {
   }
 }
 
+export async function get_missing_ingredients(username, ingredients) {
+  try {
+    const querySnapshot = await getDocs(collection(db, 'users', username, 'ingredients'));
+    const userIngredients = querySnapshot.docs.map(doc => doc.data().name.toLowerCase());
+
+    return recipeIngredients.filter(ingredient => 
+      !userIngredients.includes(ingredient.name.toLowerCase())
+    );
+  }
+  catch (err) {
+    console.error("Error getting missing ingredients :", err);
+    return [];
+  }
+}
+
 
 
 
