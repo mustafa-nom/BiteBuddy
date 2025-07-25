@@ -7,7 +7,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Recipe from './pages/Recipes'
 import Fridge from './pages/Fridge'
-
+import Mealplan from './pages/Mealplan'
 import Navbar from './components/Navbar'
 
 function App() {
@@ -64,7 +64,12 @@ const handleLogout = () => {
             }
           />
     
-
+            <Route
+              path = "/mealplan"
+              element = {
+                <Mealplan/>
+              }
+            />
         </Routes>
 
       </div>
