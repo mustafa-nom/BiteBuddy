@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addUserLogin } from '../backend/database.js'
+import { addUserLogin } from '../database.js'
 
 export default function Login({ onLogin }) {
     const [username, setUsername] = useState('');
