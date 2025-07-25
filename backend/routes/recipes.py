@@ -3,14 +3,59 @@ from config import Config
 import requests
 import os
 from dotenv import load_dotenv
+from services.gemini_api import get_recipe_from_mood
 
 load_dotenv()
 
 recipes_bp = Blueprint('recipes', __name__)
 SPOON_API_KEY = os.getenv('SPOONACULAR_API_KEY')
 
-# get food recipes based on user's ingridient
-@recipes_bp.route('/recipes/by-ingredients')
+@recipes_bp.route('/suggest', methods=['GET'])
+def suggest_recipes_by_mood():
+    # get mood from user input
+    mood = request.args.get('mood')
+    if not mood:
+        return jsonify({"error": "no mood given for recipes input"}), 500
+    
+    # gemini uses mood --> recipes for user to view
+    try:
+        food_keywords = get_recipe_from_mood(mood)
+    except Exception as e:
+        return jsonify({"error": f"gemini cant get mood query: {str(e)}"}), 500
+    
+    all_recipes = []
+    for keyword in food_keywords:
+        params = {
+            'query': keyword,
+            'number': 2,
+            'apiKey': SPOON_API_KEY
+        }
+        search_url = 'https://api.spoonacular.com/recipes/complexSearch'
+        response = requests.get(search_url, params=params)
+        data = response.json()
+
+        # take keyword data and get recipe info --> add to all_recipes
+        recipes = data.get('results', [])
+        for recipe in recipes:
+            all_recipes.append({
+                'id': recipe['id'],
+                'title': recipe['title'],
+                'image': recipe.get('image'),
+                'source_keyword': keyword
+            })
+
+    # returns all recipes atm
+    return jsonify({
+        'keywords': food_keywords,
+        "recipes": all_recipes
+    })
+
+    # fix to return only recipes that matches Firebase user fridge ingridients
+
+
+
+# get food recipes based on user's ingridient --> might delete since its not needed manually
+@recipes_bp.route('/by-ingredients')
 def get_recipes_by_ingredients(): 
     ingredients = request.args.get('ingredients')
     if not ingredients:
