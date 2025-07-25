@@ -1,14 +1,16 @@
 import { useState } from 'react';
+import { addUserLogin } from '../database.js'
 
 export default function Login({ onLogin }) {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
 
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         // replace with real user authorization later, right now just checks that there is something entered
         if (username && password) {
+            await addUserLogin(username);
             onLogin(); // triggers the setIsLoggedIn in App.js
         }
         else {
@@ -18,8 +20,12 @@ export default function Login({ onLogin }) {
 
     return (
         <div className="login-container">
-            <form onSubmit={handleSubmit}>
+            <div className="login-header">
                 <h1>BiteBuddy</h1>
+                <p> Welcome to BiteBuddy - your personal food companion! </p>
+                <p> Discover recipes, customized meal plans, and find nutritional information. </p>
+            </div>
+            <form onSubmit={handleSubmit}>
 
                 <input
                     type="text"
