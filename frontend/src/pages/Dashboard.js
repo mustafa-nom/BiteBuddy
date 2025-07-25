@@ -1,25 +1,38 @@
-import { useState } from 'react';
-
-export default function Dashboard() {
+import { useState, useEffect } from 'react';
+import { getUserData } from '../database.js';
+export default function Dashboard({ username }) {
     // state to check which tab is active. we start by looking at user's saved recipes.
     const [activeTab, setActiveTab] = useState('recipes');
 
     // sample data, it will eventually come from API
-    const savedRecipes = [
-        { id: 1, name: 'Salad', cookTime: '20 mins', category: 'Vegetarian' },
-        { id: 2, name: 'Chicken Alfredo', cookTime: '30 mins', category: 'Pasta' },
-        { id: 3, name: 'Pancakes', cookTime: '20 mins', category: 'Breakfast' },
-    ];
+    // const savedRecipes = [
+    //     { id: 1, name: 'Salad', cookTime: '20 mins', category: 'Vegetarian' },
+    //     { id: 2, name: 'Chicken Alfredo', cookTime: '30 mins', category: 'Pasta' },
+    //     { id: 3, name: 'Pancakes', cookTime: '20 mins', category: 'Breakfast' },
+    // ];
 
     const mealPlan = [
         { day: 'Monday', meals: ['Oatmeal', 'Salad', 'Shrimp Fried Rice'] },
         { day: 'Tuesday', meals: ['Smoothie', 'Sandwich', 'Chicken Alfredo Pasta'] },
     ];
 
+    const [savedRecipes, setSavedRecipes] = useState([]);
+    const [loading, setLoading] = useState(false);
+    useEffect(() => {
+        if (!username) return;       
+        setLoading(true);
+    
+        getUserData(username)
+          .then(data => setSavedRecipes(data?.recipes || []))
+          .catch(err => console.error("Error loading user data:", err))
+          .finally(() => setLoading(false));
+    
+      }, [username]);
+
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
-                <h1>Welcome to BiteBuddy!</h1>
+                <h1>Welcome to BiteBuddy, {username}!</h1>
             </div>
 
             <div className="dashboard-tabs">
@@ -40,12 +53,19 @@ export default function Dashboard() {
 
             </div>
 
+            {/* <div className="recipes-list">
+    <h2>Saved Recipes</h2>
+
+  </div> */}
+
             <div className="dashboard-content">
                 {activeTab === 'recipes' ? (
                     <div className = "recipes-list">
                         <h2>Saved Recipes</h2>
                         {/* list out saved recipes */}
-                        {savedRecipes.length > 0 ? (
+                        {loading ? (
+                            <p>Loading saved recipes...</p>):
+                        savedRecipes.length > 0 ? (
                             <ul>
                                 {savedRecipes.map (recipe => (
                                     // use recipe id as index for map
