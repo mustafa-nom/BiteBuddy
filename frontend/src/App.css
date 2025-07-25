@@ -297,6 +297,7 @@ body {
   justify-content: space-between; 
   gap: 2rem;
   margin-top: 1.5rem;
+  align-items: flex-start;
 }
 
 .fridge-column {
@@ -316,6 +317,7 @@ body {
 
 /* right column displaying user's fridge */
 .fridge-display-column {
+  position: relative;
   background: white;
   padding: 1.5rem;
   border-radius: 12px;
@@ -420,15 +422,15 @@ body {
   gap: 0.8rem;
   padding: 0;
   list-style: none;
-  margin-top: 1rem;
-  margin-left: 2rem;
+  /* margin-top: 1rem; */
+  margin-right: 1rem;
   /* fridge items align on top */
   align-content: flex-start; 
 }
 
 .fridge-item {
   background: #f8f8f8;
-  padding: 0.7rem 1.2rem;
+  padding: 0.6rem 1rem;
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -438,6 +440,7 @@ body {
   height: 20px;
   align-items: center;
   gap: 0.8rem;
+  margin-bottom: 5px;
 }
 
 .fridge-item:hover {
@@ -475,16 +478,6 @@ body {
   margin-bottom: 0;
 }
 
-#fridge-bottom {
-  position: relative;
-  display: flex;
-  border-color: rgb(77, 77, 77);
-  border-width: 5px;
-  border-style: solid;
-  padding-bottom: 4rem;
-  min-height: 200px;
-  margin-bottom: 0;
-}
 
 #fridge-bottom p {
   margin-left: 30px;
@@ -510,5 +503,101 @@ body {
 }
 
 #bottomline {
-  margin-bottom: 30%;
+  margin-bottom: 70%;
+}
+
+
+
+
+/* door open state */
+#fridge-bottom.door-open {
+  transform: perspective(80rem) rotateY(95deg);
+  box-shadow: -10px 0 15px rgba(0, 0, 0, 0.2);
+  z-index: 10; /* ensure it appears above other elements when open */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+.fridge-body {
+  position: relative;
+  min-height: 300px;
+  width: 98%;
+  border-color: rgb(77, 77, 77);
+  border-width: 5px;
+  border-radius: 8px;
+  border-style: solid;
+  margin-top:0;
+  display:flex;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+.fridge-interior {
+  position: relative;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #f8f8f8;
+  z-index: 1;
+  padding: 1rem;
+  min-height: 300px;
+  display:flex;
+}
+
+#fridge-bottom {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  transition: transform 0.6s ease;
+  transform-origin: right center;
+  cursor: pointer;
+  z-index: 2;
+  margin: 0;
+  padding: 1.2rem;
+  box-sizing: border-box;
+}
+
+#fridge-bottom:hover {
+  background-color: rgb(219, 225, 218);
+}
+
+
+
+.fridge-shelves {
+  width: 99%;
+  position: relative;
+  min-height: 300px;
+  padding-top: 5px; /* accounts for first item's top position */
+}
+
+.fridge-shelves::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 56px, /* space between lines */
+    rgba(0,0,0,0.15) 57px, /* start line */
+    rgba(0,0,0,0.15) 59px, /* end line, subtract above to get thickness */
+    transparent 47px /* reset */
+  );
+  z-index: 1;
+  pointer-events: none;
 }
