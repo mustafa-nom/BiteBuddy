@@ -4,6 +4,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from services.gemini_api import get_recipe_from_mood
+from services.spoonacular_api import get_recipes_from_keywords
 
 load_dotenv()
 
@@ -23,34 +24,19 @@ def suggest_recipes_by_mood():
     except Exception as e:
         return jsonify({"error": f"gemini cant get mood query: {str(e)}"}), 500
     
-    all_recipes = []
-    for keyword in food_keywords:
-        params = {
-            'query': keyword,
-            'number': 2,
-            'apiKey': SPOON_API_KEY
-        }
-        search_url = 'https://api.spoonacular.com/recipes/complexSearch'
-        response = requests.get(search_url, params=params)
-        data = response.json()
-
-        # take keyword data and get recipe info --> add to all_recipes
-        recipes = data.get('results', [])
-        for recipe in recipes:
-            all_recipes.append({
-                'id': recipe['id'],
-                'title': recipe['title'],
-                'image': recipe.get('image'),
-                'source_keyword': keyword
-            })
-
-    # returns all recipes atm
+    try:
+        recipe_results = get_recipes_from_keywords(food_keywords, 2)
+    except Exception as e:
+        return jsonify({"error": f"spoonacular api-call failed: {str(e)}"}), 500
+    
     return jsonify({
-        'keywords': food_keywords,
-        "recipes": all_recipes
+        "keywords": food_keywords, 
+        "recipes": recipe_results,
     })
 
+
     # fix to return only recipes that matches Firebase user fridge ingridients
+    
 
 
 
