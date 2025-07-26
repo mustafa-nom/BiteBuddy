@@ -4,28 +4,28 @@ import requests
 import os
 
 load_dotenv()
-# load api key
 SPOON_API_KEY = os.getenv('SPOONACULAR_API_KEY')
-print(SPOON_API_KEY)
 
-# call get request with list of ingredients
-ingredients = ['paprika', 'flour', 'salt', 'milk', 'chicken']
-url = 'https://api.spoonacular.com/recipes/findByIngredients'
-params = {
-    'ingredients': ingredients,
-    'number': 5,
-    'apiKey': SPOON_API_KEY
-}
+def get_recipes_from_keywords(food_keywords, num_recipe_per_keyword):
+    all_recipes = []
+    for keyword in food_keywords:
+        params = {
+            'query': keyword,
+            'number': num_recipe_per_keyword,
+            'apiKey': SPOON_API_KEY
+        }
+        search_url = 'https://api.spoonacular.com/recipes/complexSearch'
+        response = requests.get(search_url, params=params)
+        data = response.json()
 
-response = requests.get(url, params=params)
-print(response.json())
+        # take keyword data and get recipe info --> add to all_recipes
+        recipes = data.get('results', [])
+        for recipe in recipes:
+            all_recipes.append({
+                'id': recipe['id'],
+                'title': recipe['title'],
+                'image': recipe.get('image'),
+                'source_keyword': keyword
+            })
 
-# get missing ingredients
-
-# get id of the recipe and perform recipe information request
-
-# get extended_ingredients fromm response and extract amount descriptions from 'original'
-# description = []
-# recipe_ingredients = response.json()['extended_ingredients']
-# for ingredient in recipe_ingredients:
-#   description.append(ingredient['original'])
+    return all_recipes
