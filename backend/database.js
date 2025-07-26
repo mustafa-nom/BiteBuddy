@@ -32,7 +32,8 @@ export async function addUserLogin(username) {
   try {
     const ref = await setDoc(doc(db, 'users', username), {
       ingredients: [],
-      recipes: [], 
+      recipes: [],
+      dietary_restrictions: [],
     }, {merge:true});
   } catch (err) {
     console.error("Error Occured!", err);
