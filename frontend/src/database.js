@@ -2,7 +2,7 @@
 // functions needed from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
-import {getFirestore, collection, addDoc, getDocs, doc, getDoc, setDoc} from 'firebase/firestore';
+import {getFirestore, collection, addDoc, getDocs, doc, getDoc, setDoc, updateDoc, arrayUnion, arrayRemove, deleteField} from 'firebase/firestore';
 // import 'dotenv/config'; 
 // import {
 //   doc, deleteDoc,
@@ -31,13 +31,13 @@ const db = getFirestore(app);
 export async function addUserLogin(username) {
   try {
     const ref = await setDoc(doc(db, 'users', username), {
-      ingredients: [],
-      recipes: [],
+      fridge_ingredients: [],
+      saved_recipes: {},
       dietary_restrictions: [],
       password: '', 
     }, {merge:true});
   } catch (err) {
-    console.error("Error Occured!", err);
+    console.error("Failed to log User!", err);
   }
 }
 
@@ -58,43 +58,112 @@ export async function getUserData(username) {
   }
 }
 
-
-export async function addIngredient(username, ingredient) {
+export async function addPassword(username, password) {
   try {
-    const ref = await addDoc(collection(db, 'users', username, 'ingredients'), {
-      ...ingredient
-    });
-    console.log("Ingredient added!");
+    const ref = doc(db, 'users', username);
+    await updateDoc(ref, { password: password });
+    console.log("Password added!");
   }
   catch (err) {
     console.error("Something went wrong", err);
   }
 }
 
+
+export async function addIngredient(username, ingredient) {
+  try {
+    const ref = doc(db, "users", username);
+    await updateDoc(ref, { fridge_ingredients: arrayUnion(ingredient) });
+  
+    console.log("Ingredient added!");
+  }
+  catch (err) {
+    console.error("Failed to add ingredient: ", err);
+  }
+}
+
+export async function removeIngredient(username, ingredient) {
+  try {
+    const ref = doc(db, "users", username);
+    await updateDoc(ref, { fridge_ingredients: arrayRemove(ingredient) });
+  
+    console.log("Ingredient removed!");
+  }
+  catch (err) {
+    console.error("Failed to remove ingredient: ", err);
+  }
+}
+
+
+export async function addDietaryRestrictions(username, dietary_restriction) {
+  try {
+    const ref = doc(db, "users", username);
+    await updateDoc(ref, { dietary_restrictions: arrayUnion(dietary_restriction) });
+    console.log("Restriction added!");
+  }
+  catch (err) {
+    console.error("Adding dietary restrction failed", err);
+  }
+}
+export async function removeDietaryRestrictions(username, dietary_restriction) {
+  try {
+    const ref = doc(db, "users", username);
+    await updateDoc(ref, { dietary_restrictions: arrayRemove(dietary_restriction) });
+    console.log("Restriction removed!");
+  }
+  catch (err) {  
+    console.error("Removing dietary restrction failed", err);
+  }
+}
+
+
 export async function addRecipe(username, recipe) {
   try {
-    const ref = await addDoc(collection(db, 'users', username, 'recipes'), {
-      ...recipe
+    const ref = doc(db, 'users', username);
+    await updateDoc(ref, {
+      [`saved_recipes.${recipe}`]: []
     });
+
     console.log("Recipe added!");
   }
   catch (err) {
     console.error("Something went wrong", err);
-  }
+  } 
 }
 
+
 export async function getRecipes(username) {
+  const data = await getUserData(username);
+  const recipesMap = data?.saved_recipes || {};
+  return Object.entries(recipesMap).map(([recipeName, recipeDetails]) => ({
+    name: recipeName,
+    ...recipeDetails
+  }));
+}
+
+
+export async function getDietaryRestrictions(username) {
   try {
-    const querySnapshot = await getDocs(collection(db, 'users', username, 'recipes'));
-    const recipes = [];
-    querySnapshot.forEach((doc) => {
-      recipes.push({ id: doc.id, ...doc.data() });
-    });
-    return recipes;
+    const user = doc(db, 'users', username);
+    const snap = await getDoc(user);
+    if (snap.exists()) {
+      const dietary = snap.data().dietary_restrictions;
+      if (!dietary) {
+        console.log("No dietary restrictions found for user.");
+        return [];
+      }
+      else {
+        return dietary;
+      }
+    } 
+    else {
+      console.log("User does not exist!!!!");
+      return null;
+    }
   }
   catch (err) {
-    console.error("Error getting the recipes: ", err);
-    return [];
+    console.error("Error getting user data: ", err);
+    return null;
   }
 }
 
