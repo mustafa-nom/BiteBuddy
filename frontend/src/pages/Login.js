@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { addUserLogin } from '../database.js'
+import { addUserLogin, getUserData, addPassword } from '../database.js'
 
 export default function Login({ onLogin }) {
     const [username, setUsername] = useState('');
@@ -25,8 +25,11 @@ export default function Login({ onLogin }) {
                 }
             }
             else {
-                await addUserLogin(username); // just for debugging, but we need to put this in the sign up page!
-                alert("User does not exit. Please sign up first!");
+                await addUserLogin(username);
+                await addPassword(username, password);
+                onLogin();
+                 // just for debugging, but we need to put this in the sign up page!
+                // alert("User does not exit. Please sign up first!");
             }
         }
         catch (err){
