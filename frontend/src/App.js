@@ -60,8 +60,13 @@ const handleLogout = () => {
           <Route
             path = "/fridge"
             element = {
-              <Fridge/>
-            }
+              isLoggedIn ?
+              <Fridge username={currentUser}/>
+              :
+              <Navigate to="/" />
+
+            
+          }
           />
     
 
