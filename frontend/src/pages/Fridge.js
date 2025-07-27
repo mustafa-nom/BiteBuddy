@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { addDietaryRestriction, addIngredient, removeIngredient, getUserData, removeDietaryRestriction } from '../database.js';
 
 
-export default function Fridge() {
+export default function Fridge({ username}) {
     // array to hold ingredients in users fridge
     const [ingredients, setIngredients] = useState([]);
     // manual inputted ingredients
@@ -18,37 +19,56 @@ export default function Fridge() {
     const dietaryRestrictions = [
         'Vegitarian', 'Vegan', 'Halal', 'Kosher', 'Gluten-Free', 'Pescetarian'
     ]
+    // the useEffect is to dispaly current user data so they can pick up where they left off
+    
+    useEffect(() => {
+        if (!username) return;
+        getUserData(username) 
+            .then(data => {
+                setIngredients(data?.fridge_ingredients || []);
+                setDiet(data?.dietary_restrictions || []);
+            })
+            .catch(err => console.error("Error loading user data:", err));
+    }, [username]);
 
-    const handleAddDiet = (diet) => {
+    const handleAddDiet = async (diet) => {
         if (diets.includes(diet)) {
             setDiet(diets.filter(d => d !== diet));
+            await removeDietaryRestriction(username, diet); 
+        
         }
         else {
             setDiet(diets.concat(diet))
+            await addDietaryRestriction(username, diet);
         }
+        
     }
 
     // if ingredient isn't already in the fridge, add it to ingredients array
-    const handleAddCommonIngredient = (ingredient) => {
+    const handleAddCommonIngredient = async (ingredient) => {
         if (!ingredients.includes(ingredient)) {
+
             setIngredients(ingredients.concat(ingredient))
+            await addIngredient(username, ingredient); 
         }
     };
 
 
     // if custom ingredient is not already in ingredients, add it to array
-    const handleAddCustomIngredient = (e) => {
+    const handleAddCustomIngredient = async (e) => {
         e.preventDefault();
         if (customIngredient.trim() && !ingredients.includes(customIngredient)) {
             setIngredients(ingredients.concat(customIngredient))
+            await addIngredient(username, customIngredient);
             setCustomIngredient(''); // reset
         }
     };
 
 
     // filter out specific ingredient from ingredient array
-    const handleRemoveIngredient = (ingredientToRemove) => {
+    const handleRemoveIngredient = async (ingredientToRemove) => {
         setIngredients(ingredients.filter(ing => ing !== ingredientToRemove));
+        await removeIngredient(username, ingredientToRemove); 
     };
 
 
