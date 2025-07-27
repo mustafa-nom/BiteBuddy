@@ -1,7 +1,8 @@
 import { useState } from 'react';
+import { addDietaryRestriction, addIngredient, removeIngredient } from '../database.js';
 
 
-export default function Fridge() {
+export default function Fridge({ username}) {
     // array to hold ingredients in users fridge
     const [ingredients, setIngredients] = useState([]);
     // manual inputted ingredients
@@ -19,19 +20,23 @@ export default function Fridge() {
         'Vegitarian', 'Vegan', 'Halal', 'Kosher', 'Gluten-Free', 'Pescetarian'
     ]
 
-    const handleAddDiet = (diet) => {
+    const handleAddDiet = async (diet) => {
         if (diets.includes(diet)) {
             setDiet(diets.filter(d => d !== diet));
+        
         }
         else {
             setDiet(diets.concat(diet))
         }
+        await addDietaryRestriction(username, diet);
     }
 
     // if ingredient isn't already in the fridge, add it to ingredients array
-    const handleAddCommonIngredient = (ingredient) => {
+    const handleAddCommonIngredient = async (ingredient) => {
         if (!ingredients.includes(ingredient)) {
+
             setIngredients(ingredients.concat(ingredient))
+            await addIngredient(username, ingredient); 
         }
     };
 
@@ -47,8 +52,9 @@ export default function Fridge() {
 
 
     // filter out specific ingredient from ingredient array
-    const handleRemoveIngredient = (ingredientToRemove) => {
+    const handleRemoveIngredient = async (ingredientToRemove) => {
         setIngredients(ingredients.filter(ing => ing !== ingredientToRemove));
+        await removeIngredient(username, ingredientToRemove); 
     };
 
 
