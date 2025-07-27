@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import {addUserLogin, addPassword, addIngredient, addDietaryRestriction, addRecipe} from './frontend/src/database.js';
+import {addUserLogin, addPassword, addIngredient, addDietaryRestriction, addRecipe} from '../frontend/src/database.js';
 (async () => {
     const user = 'testuser';
   
