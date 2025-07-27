@@ -29,3 +29,22 @@ def get_recipes_from_keywords(food_keywords, num_recipe_per_keyword):
             })
 
     return all_recipes
+
+def get_ingredient(ingredient_name):
+    params = {
+        'query': ingredient_name,
+        'apiKey': SPOON_API_KEY
+    }
+    search_url = 'https://api.spoonacular.com/food/ingredients/search'
+    response = requests.get(search_url, params=params)
+    data = response.json()
+    results = data.get('results', [])
+    if not results:
+        return None
+
+    ingredient = results[0]
+    return {
+        'id': ingredient[id],
+        'name': ingredient[name],
+        'image': ingredient.get(image)
+    }
