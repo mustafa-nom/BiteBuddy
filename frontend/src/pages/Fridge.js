@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { addDietaryRestriction, addIngredient, removeIngredient } from '../database.js';
+import { useState, useEffect } from 'react';
+import { addDietaryRestriction, addIngredient, removeIngredient, getUserData, removeDietaryRestriction } from '../database.js';
 
 
 export default function Fridge({ username}) {
@@ -19,6 +19,17 @@ export default function Fridge({ username}) {
     const dietaryRestrictions = [
         'Vegitarian', 'Vegan', 'Halal', 'Kosher', 'Gluten-Free', 'Pescetarian'
     ]
+    // the useEffect is to dispaly current user data so they can pick up where they left off
+    
+    useEffect(() => {
+        if (!username) return;
+        getUserData(username) 
+            .then(data => {
+                setIngredients(data?.fridge_ingredients || []);
+                setDiet(data?.dietary_restrictions || []);
+            })
+            .catch(err => console.error("Error loading user data:", err));
+    }, [username]);
 
     const handleAddDiet = async (diet) => {
         if (diets.includes(diet)) {
@@ -42,10 +53,11 @@ export default function Fridge({ username}) {
 
 
     // if custom ingredient is not already in ingredients, add it to array
-    const handleAddCustomIngredient = (e) => {
+    const handleAddCustomIngredient = async (e) => {
         e.preventDefault();
         if (customIngredient.trim() && !ingredients.includes(customIngredient)) {
             setIngredients(ingredients.concat(customIngredient))
+            await addIngredient(username, customIngredient);
             setCustomIngredient(''); // reset
         }
     };
