@@ -95,7 +95,7 @@ export async function removeIngredient(username, ingredient) {
 }
 
 
-export async function addDietaryRestrictions(username, dietary_restriction) {
+export async function addDietaryRestriction(username, dietary_restriction) {
   try {
     const ref = doc(db, "users", username);
     await updateDoc(ref, { dietary_restrictions: arrayUnion(dietary_restriction) });
@@ -105,7 +105,7 @@ export async function addDietaryRestrictions(username, dietary_restriction) {
     console.error("Adding dietary restrction failed", err);
   }
 }
-export async function removeDietaryRestrictions(username, dietary_restriction) {
+export async function removeDietaryRestriction(username, dietary_restriction) {
   try {
     const ref = doc(db, "users", username);
     await updateDoc(ref, { dietary_restrictions: arrayRemove(dietary_restriction) });
@@ -120,8 +120,9 @@ export async function removeDietaryRestrictions(username, dietary_restriction) {
 export async function addRecipe(username, recipe) {
   try {
     const ref = doc(db, 'users', username);
+    const key = recipe.replace(/\s+/g, '_').toLowerCase(); // replace spaces with underscores and convert to lowercase
     await updateDoc(ref, {
-      [`saved_recipes.${recipe}`]: []
+      [`saved_recipes.${key}`]: []
     });
 
     console.log("Recipe added!");
@@ -171,13 +172,16 @@ export async function getDietaryRestrictions(username) {
 
 
 
-// // test run 
+// test run 
 // (async () => {
 //   // comment‑out after first run if you don’t want duplicates
-//   await addRecipe();
-
-//   const pizzas = await getRecipes();
-//   console.table(pizzas);   
+//   await addUserLogin('testuser');
+//   await addPassword('testuser', 'password123');
+//   await addIngredient('testuser', 'tomato');
+//   await addIngredient('testuser', 'cheese');
+//   await addDietaryRestrictions('testuser', 'vegetarian');
+//   await addRecipe('testuser', 'Margherita Pizza');
+ 
 
 //   process.exit(0);         
 // })();
