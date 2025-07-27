@@ -34,12 +34,14 @@ export default function Fridge({ username}) {
     const handleAddDiet = async (diet) => {
         if (diets.includes(diet)) {
             setDiet(diets.filter(d => d !== diet));
+            await removeDietaryRestriction(username, diet); 
         
         }
         else {
             setDiet(diets.concat(diet))
+            await addDietaryRestriction(username, diet);
         }
-        await addDietaryRestriction(username, diet);
+        
     }
 
     // if ingredient isn't already in the fridge, add it to ingredients array
