@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { addUserLogin, getUserData, addPassword } from '../database.js'
+import { Link } from 'react-router-dom';
 
 export default function Login({ onLogin }) {
     const [username, setUsername] = useState('');
@@ -60,6 +61,12 @@ export default function Login({ onLogin }) {
                 />
 
                 <button type="submit">LOG IN</button>
+                <p className="text-sm text-center mt-4">
+                    Don't have an account?{" "}
+                    <Link to="/signup" className="text-blue-500 underline hover:text-blue-700">
+                        Sign up
+                    </Link>
+                </p>
             </form>
         </div>
     );

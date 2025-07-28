@@ -22,7 +22,7 @@ const mockRecipes = [
         ]
     },
     {
-      id: 3,
+      id: 2,
       name: 'Salad',
       cookTime: '15 mins',
       category: 'Vegetarian',
