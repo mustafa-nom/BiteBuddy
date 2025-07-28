@@ -272,15 +272,29 @@ body {
   font-size: 1rem;
 }
 
+.recipe-box{
+  width: 100%;
+  max-width: 1500px;
+  padding: 2rem;
+  border-radius: 16px;
+  background: rgba(221, 227, 229, 0.762);
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin: 50px 0;
+}
+
 .recipe-container {
-  width: 80%;
+  width: 50%;
   margin: 0 auto;
   text-align: center;
+}
+
+.recipe-card{
   border: 4px solid rgba(0,0,0,0.5);
   padding:20px;
   border-radius: 12px;
+  margin: 20px;
 }
-
 .recipe-card h4{
   opacity: 0.7;
   padding: 0em;
@@ -342,14 +356,15 @@ body {
   justify-content: space-between; 
   gap: 2rem;
   margin-top: 1.5rem;
-  align-items: flex-start;
+  /* align-items: flex-start; */
+  align-items: stretch;
 }
 
 .fridge-column {
   width: 50%;
   display: flex;
   flex-direction: column;
-  min-height: 100%; 
+  /* min-height: 100%;  */
 }
 
 /* left column where user adds ingredients */
@@ -369,6 +384,8 @@ body {
   border-radius: 12px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
 }
 
 .fridge-header {
@@ -549,6 +566,41 @@ body {
   border-style: solid;
 }
 
+
+/* Meal Plan Page */
+.day-container{
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.mealplan-container{
+  width: 100%;
+  max-width: 1500px;
+  padding: 2rem;
+  border-radius: 16px;
+  background: rgba(221, 227, 229, 0.762);
+  text-align: center;
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+  margin: 50px 0;
+  text-align: left;
+  align-items: stretch;
+}
+
+.mealplan-recipes {
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+  flex: 1 1 300px;
+  display: flex;
+}
+
+.day-header{
+  border-bottom: 2px solid rgba(0,0,0,0.8);
+
+}
+.center-btn{
+  text-align: center;
+}
 #topline {
   margin-top: 60px;
 }
@@ -562,7 +614,7 @@ body {
 
 /* door open state */
 #fridge-bottom.door-open {
-  transform: perspective(80rem) rotateY(95deg);
+  transform: perspective(80rem) rotateY(100deg);
   box-shadow: -10px 0 15px rgba(0, 0, 0, 0.2);
   /* ensure it appears above other elements when open */
   z-index: 10; 
@@ -581,6 +633,7 @@ body {
 
 .fridge-body {
   position: relative;
+  flex:1;
   min-height: 400px;
   width: 98%;
   border-color: rgb(77, 77, 77);
@@ -598,7 +651,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   background-color: #f8f8f8;
   z-index: 1;
   padding: 1rem;

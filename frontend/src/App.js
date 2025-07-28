@@ -9,6 +9,7 @@ import Recipe from './pages/Recipes'
 import Fridge from './pages/Fridge'
 import RecipeDetails from './pages/RecipeDetails'
 
+import Mealplan from './pages/Mealplan'
 import Navbar from './components/Navbar'
 
 function App() {
@@ -83,7 +84,12 @@ const handleLogout = () => {
             element={<RecipeDetails />} 
           />
     
-
+            <Route
+              path = "/mealplan"
+              element = {
+                <Mealplan/>
+              }
+            />
         </Routes>
 
       </div>
