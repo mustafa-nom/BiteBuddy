@@ -17,7 +17,7 @@
     "lucide-react": "^0.526.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "react-router-dom": "^7.7.0",
+    "react-router-dom": "^7.7.1",
     "react-scripts": "5.0.1",
     "tailwind-merge": "^3.3.1",
     "tailwind-variants": "^2.0.0",
@@ -27,7 +27,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --watchAll",
     "eject": "react-scripts eject",
     "dev": "react-scripts start"
   },

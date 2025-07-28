@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { addUserLogin, getUserData, addPassword } from '../database.js'
 import {
   Card,
   CardHeader,
@@ -19,27 +20,40 @@ export default function Signup({ onSignupSuccess }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!username || !password) {
+      // await addUserLogin(username);
+      // onLogin(); // triggers the setIsLoggedIn in App.js
+      return alert("Please enter a username and password!");
+  }
+
     if (password !== confirmPassword) {
       alert("Passwords do not match.");
       return;
     }
 
     try {
+      const user = await getUserData(username);
+            if (user) {
+                return alert("Username already exists. Please choose a different username or go to Login page!");
+
+                    
+                } 
+            
       // You can replace this with your actual signup API
-      const res = await fetch("http://localhost:5000/auth/signup", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+      // const res = await fetch("http://localhost:5000/auth/signup", {
+      //   method: "POST",
+      //   headers: { "Content-Type": "application/json" },
+      //   body: JSON.stringify({ username, password }),
+      // });
 
-      const data = await res.json();
+      // const data = await res.json();
 
-      if (res.ok) {
-        alert("Account created! Please log in.");
-        onSignupSuccess(); // Redirect to login page
-      } else {
-        alert(data.error || "Signup failed.");
-      }
+     
+      await addUserLogin(username);
+      await addPassword(username, password);
+      alert("Account created! Please log in.");
+      onSignupSuccess(); // Redirect to login page
+      
     } catch (err) {
       console.error("Signup error:", err);
       alert("An error occurred. Please try again.");

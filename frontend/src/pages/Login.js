@@ -26,9 +26,10 @@ export default function Login({ onLogin }) {
                 }
             }
             else {
-                await addUserLogin(username);
-                await addPassword(username, password);
-                onLogin();
+                return alert("User does not exist. Please sign up first!");
+                // await addUserLogin(username);
+                // await addPassword(username, password);
+                // onLogin();
                  // just for debugging, but we need to put this in the sign up page!
                 // alert("User does not exit. Please sign up first!");
             }
