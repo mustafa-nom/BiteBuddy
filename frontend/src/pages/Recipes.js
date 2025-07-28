@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import parse from 'html-react-parser';
 import '../App.css';
-import '../output.css'; 
+import { Button } from '../components/ui/Button';
 
 export default function Recipe(){
 
@@ -89,6 +89,7 @@ export default function Recipe(){
                                         {parse(recipe.instructions)}
                                      </div>
                                 <button className = "saveButton">Save Recipe</button>
+                                <Button>Save Recipe</Button>
                             </div>
                         ))}
                     </div>
