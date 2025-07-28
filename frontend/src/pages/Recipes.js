@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import parse from 'html-react-parser';
+import '../App.css';
+import { Button } from '../components/ui/Button';
 
 export default function Recipe(){
 
@@ -75,23 +78,22 @@ export default function Recipe(){
                 <div className = "recipe-container">
 
                     {/* Placeholder card for what a recipe will look like */}
-                    
-                        {generatedRecipe.map (recipe => (
+                    <div className = "recipe-card">
+                        {recipes.map (recipe => (
                             <div key = {recipe.id} className = "recipe-card">
-                                <img src = {recipe.img}></img>
-                                <h3>{recipe.name}</h3>
-                                <h4>{recipe.type}</h4>
-                                <h4>{recipe.cookTime}</h4>
-                                <h4>{recipe.neededIngredients}</h4>
-                                <p>{recipe.instructions}</p>
-                                <div className = "button-list">
-                                    {/* TODO add a basic functionality to the buttons */}
-                                    <button className = "view-btn">Save Recipe</button>
-                                    <button className = "view-btn">Shuffle Recipe</button>
-                                </div>
+                                <h3>{recipe.title}</h3>
+                                <img src = {recipe.image} alt={recipe.title}></img>
+                                <h4>Type: {recipe.type}</h4>
+                                <h4>Time required: ~{recipe.cookTime}</h4>
+                                <h4>Ingredients: {recipe.neededIngredients}</h4>
+                                    <div className="instructions">
+                                        {parse(recipe.instructions)}
+                                     </div>
+                                <button className = "saveButton">Save Recipe</button>
+                                <Button>Save Recipe</Button>
                             </div>
                         ))}
-                    
+                    </div>
                 </div>
             </div>
         </div>
