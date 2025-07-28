@@ -1,9 +1,5 @@
-<<<<<<< HEAD
 import { useEffect, useState } from 'react';
 import { addDietaryRestriction, addIngredient, removeIngredient, getUserData, removeDietaryRestriction } from '../database.js';
-=======
-import { useState } from 'react';
->>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
 
 export default function Recipe(){
 
@@ -33,21 +29,13 @@ export default function Recipe(){
             return
         }
         setShowRecipes(!showRecipes)
-<<<<<<< HEAD
-
-=======
-        
->>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
         try {
             const res = await fetch(`http://localhost:5000/recipes/suggest?mood=${encodeURIComponent(textInput)}`);
             const data = await res.json();
 
             if (data.recipes) {
                 setRecipes(data.recipes);
-<<<<<<< HEAD
                 console.log('data.recipes:', recipes);
-=======
->>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
             } else {
                 alert("No recipes found.");
                 setRecipes([]);
@@ -59,20 +47,16 @@ export default function Recipe(){
         }
     };
 
-<<<<<<< HEAD
 
     useEffect(() => {
         console.log('recipes updated:', recipes);
     }, [recipes]);
 
-=======
->>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
     // This will save the recipe to the database
     const SaveRecipe = () => {
 
     };
 
-<<<<<<< HEAD
     // This will shuffle the recipe for a new one KEEP THIS COMMENTED UNTIL WE WORK ON IT
     // const ShuffleRecipe = () => {
     //     try {
@@ -91,12 +75,6 @@ export default function Recipe(){
     //         alert('Failed getting recipes. Try again.')
     //     }
     // }
-=======
-    // This will shuffle the recipe for a new one
-    const ShuffleRecipe = () => {
-
-    }
->>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
 
     return(
         // Everything will be inside this container
@@ -132,7 +110,6 @@ export default function Recipe(){
 
                     {/* Placeholder card for what a recipe will look like */}
                     
-<<<<<<< HEAD
                         {recipes.map (recipe => (
                             <div key = {recipe.id} className = "recipe-card">
                                 <img src = {recipe.image}></img>
@@ -148,20 +125,6 @@ export default function Recipe(){
                                     {/* TODO add a basic functionality to the buttons */}
                                     <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
                                     {/* <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
-=======
-                        {generatedRecipe.map (recipe => (
-                            <div key = {recipe.id} className = "recipe-card">
-                                <img src = {recipe.img}></img>
-                                <h3>{recipe.name}</h3>
-                                <h4>{recipe.type}</h4>
-                                <h4>{recipe.cookTime}</h4>
-                                <h4>{recipe.neededIngredients}</h4>
-                                <p>{recipe.instructions}</p>
-                                <div className = "button-list">
-                                    {/* TODO add a basic functionality to the buttons */}
-                                    <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
-                                    <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button>
->>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
                                 </div>
                             </div>
                         ))}
