@@ -34,7 +34,8 @@ export async function addUserLogin(username) {
       fridge_ingredients: [],
       saved_recipes: {},
       dietary_restrictions: [],
-      password: '', 
+      password: '',
+      meal_plans: {}, 
     }, {merge:true});
   } catch (err) {
     console.error("Failed to log User!", err);
@@ -116,13 +117,13 @@ export async function removeDietaryRestriction(username, dietary_restriction) {
   }
 }
 
-
+// when we save recipe, put everything in this format {title (string), mealType (string), cookTime (int), ingredients (array of strings), instructions (string), imageUrl (string)}
 export async function addRecipe(username, recipe) {
   try {
     const ref = doc(db, 'users', username);
-    const key = recipe.replace(/\s+/g, '_').toLowerCase(); // replace spaces with underscores and convert to lowercase
+    const key = recipe.title.replace(/\s+/g, '_').toLowerCase(); // replace spaces with underscores and convert to lowercase
     await updateDoc(ref, {
-      [`saved_recipes.${key}`]: []
+      [`saved_recipes.${key}`]: recipe
     });
 
     console.log("Recipe added!");
@@ -132,6 +133,18 @@ export async function addRecipe(username, recipe) {
   } 
 }
 
+export async function removeRecipe(username, recipeKey) {
+  const ref = doc(db, "users", username);
+  try {
+    await updateDoc(ref, {
+      [`saved_recipes.${recipeKey}`]: deleteField()
+    });
+    console.log("Recipe removed!");
+  }
+  catch (err) {
+    console.error("Failed to remove recipe: ", err);
+  }
+} 
 
 export async function getRecipes(username) {
   const data = await getUserData(username);
@@ -168,7 +181,40 @@ export async function getDietaryRestrictions(username) {
   }
 }
 
+export async function addMealPlan(username, mealPlan) {
+  try {
+    const ref = doc(db, 'users', username);
+    await updateDoc(ref, { meal_plans: mealPlan });
+    console.log("Meal plan added!");
+  }
+  catch (err) {
+    console.error("Something went wrong", err);
+  }
+}
 
+export async function getMealPlans(username) {
+  try {
+    const snap = await getDoc(doc(db, 'users', username));
+    if (snap.exists()) {
+      const mealPlans = snap.data().meal_plans;
+      if (!mealPlans) {
+        console.log("No meal plans found for user.");
+        return {};
+      }
+      else {
+        return mealPlans;
+      }
+    } 
+    else {
+      console.log("User does not exist!!!!");
+      return null;
+    }
+  }
+  catch (err) {
+    console.error("Error getting data or meal plan: ", err);
+    return null;
+  }
+}
 
 
 
