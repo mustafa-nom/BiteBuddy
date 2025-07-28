@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Mealplan(){
 
@@ -211,6 +211,7 @@ export default function Mealplan(){
 
     const [showSavePlan, setShowSavePlan] = useState(false);
     const [textInput, setTextInput] = useState('');
+    const [recipes, setRecipes] = useState([]);
 
     // This will generate meals using the api in the format above
     const GenerateMeals = () => {
@@ -248,6 +249,8 @@ export default function Mealplan(){
             alert('Please enter your goals for the week.');
             return
         }
+        setShowSavePlan(!showSavePlan)
+        
     };
 
     return(
@@ -273,10 +276,11 @@ export default function Mealplan(){
                 </form>
             </div>
 
-            {/* Button to generate meals*/}
-            <div className = "center-btn" id = "top">
+            {/* Button to generate meals DONT NEED TO GENERATE MEALS ANYMORE SINCE WE ARE USING A TEXTBOX*/}
+            {/* <div className = "center-btn" id = "top">
                 <button className = "view-btn" onClick={GenerateMeals}>Generate Meals 🍽</button>
-            </div>
+            </div> */}
+
             {showSavePlan && (
                 <div className = "center-btn">
                     <button className = "view-btn" onClick={SavePlan}>Save Plan</button>
@@ -322,7 +326,7 @@ export default function Mealplan(){
                                     <div className = "button-list">
                                         {/* TODO add a basic functionality to the buttons */}
                                         <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
-                                        <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button>
+                                        {/* <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
                                     </div>
                                 </div>
                             </div>

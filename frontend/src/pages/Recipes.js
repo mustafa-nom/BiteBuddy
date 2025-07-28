@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { addDietaryRestriction, addIngredient, removeIngredient, getUserData, removeDietaryRestriction } from '../database.js';
 
 export default function Recipe(){
 
@@ -28,13 +29,14 @@ export default function Recipe(){
             return
         }
         setShowRecipes(!showRecipes)
-        
+
         try {
             const res = await fetch(`http://localhost:5000/recipes/suggest?mood=${encodeURIComponent(textInput)}`);
             const data = await res.json();
 
             if (data.recipes) {
                 setRecipes(data.recipes);
+                console.log('data.recipes:', recipes);
             } else {
                 alert("No recipes found.");
                 setRecipes([]);
@@ -46,15 +48,34 @@ export default function Recipe(){
         }
     };
 
+
+    useEffect(() => {
+        console.log('recipes updated:', recipes);
+    }, [recipes]);
+
     // This will save the recipe to the database
     const SaveRecipe = () => {
 
     };
 
-    // This will shuffle the recipe for a new one
-    const ShuffleRecipe = () => {
+    // This will shuffle the recipe for a new one KEEP THIS COMMENTED UNTIL WE WORK ON IT
+    // const ShuffleRecipe = () => {
+    //     try {
+    //         const res = await fetch(`http://localhost:5000/recipes/suggest?mood=${encodeURIComponent(textInput)}`);
+    //         const data = await res.json();
 
-    }
+    //         if (data.recipes) {
+    //             setRecipes(data.recipes);
+    //         } else {
+    //             alert("No recipes found.");
+    //             setRecipes([]);
+    //         }
+    //         setTextInput('');
+    //     } catch (e) {
+    //         console.log('failed to fetch recipes', e)
+    //         alert('Failed getting recipes. Try again.')
+    //     }
+    // }
 
     return(
         // Everything will be inside this container
@@ -90,18 +111,21 @@ export default function Recipe(){
 
                     {/* Placeholder card for what a recipe will look like */}
                     
-                        {generatedRecipe.map (recipe => (
+                        {recipes.map (recipe => (
                             <div key = {recipe.id} className = "recipe-card">
-                                <img src = {recipe.img}></img>
-                                <h3>{recipe.name}</h3>
+                                <img src = {recipe.image}></img>
+                                <h3>{recipe.title}</h3>
+
+                                {/* This is not used because api doesnt give it
                                 <h4>{recipe.type}</h4>
                                 <h4>{recipe.cookTime}</h4>
                                 <h4>{recipe.neededIngredients}</h4>
-                                <p>{recipe.instructions}</p>
+                                <p>{recipe.instructions}</p> */}
+                                
                                 <div className = "button-list">
                                     {/* TODO add a basic functionality to the buttons */}
                                     <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
-                                    <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button>
+                                    {/* <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
                                 </div>
                             </div>
                         ))}
