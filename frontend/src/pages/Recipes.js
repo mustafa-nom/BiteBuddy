@@ -51,6 +51,7 @@ export default function Recipe(){
             {/* This will hold the title such as RECIPE*/}
             <div className = "recipe-header">
                 <h1>Recipes</h1>
+                <p>Generate a recipe based on your mood</p>
             </div>
 
             {/* This will hold the user input button and the recipes that are output */}
@@ -86,7 +87,7 @@ export default function Recipe(){
                                 <button className = "saveButton">Save Recipe</button>
                             </li>
                         ))}
-                    </div>
+                    
                 </div>
             </div>
         </div>
