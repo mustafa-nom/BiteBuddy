@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import parse from 'html-react-parser';
+import '../App.css';
+import '../output.css'; 
 
 export default function Recipe(){
 
@@ -76,15 +79,17 @@ export default function Recipe(){
                     {/* Placeholder card for what a recipe will look like */}
                     <div className = "recipe-card">
                         {recipes.map (recipe => (
-                            <li key = {recipe.id} className = "recipe-card">
-                                <img src = {recipe.image} alt={recipe.title}></img>
+                            <div key = {recipe.id} className = "recipe-card">
                                 <h3>{recipe.title}</h3>
-                                <h4>{recipe.type}</h4>
-                                <h4>{recipe.cookTime}</h4>
-                                <h4>{recipe.neededIngredients}</h4>
-                                <p>{recipe.instructions}</p>
+                                <img src = {recipe.image} alt={recipe.title}></img>
+                                <h4>Type: {recipe.type}</h4>
+                                <h4>Time required: ~{recipe.cookTime}</h4>
+                                <h4>Ingredients: {recipe.neededIngredients}</h4>
+                                    <div className="instructions">
+                                        {parse(recipe.instructions)}
+                                     </div>
                                 <button className = "saveButton">Save Recipe</button>
-                            </li>
+                            </div>
                         ))}
                     </div>
                 </div>
