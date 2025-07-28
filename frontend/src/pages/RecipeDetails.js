@@ -1,0 +1,137 @@
+import { useParams, useNavigate } from 'react-router-dom';
+
+// mock recipe data, what is important is the id of the recipe which is used as a key to find specifc recipes. recipes should be stored like this in database
+const mockRecipes = [
+    {
+        id: 1,
+        name: 'Oatmeal',
+        cookTime: '20 mins',
+        category: 'Vegetarian',
+        ingredients: [
+          '1/2 cup steel cut oats',
+          '1/2 cup water',
+          '1/2 cup milk',
+          '2 tbsp honey'
+        ],
+        instructions: [
+          'In a small pot, bring water to a boil',
+          'Add in oats',
+          'blah',
+          'blah',
+          'blah'
+        ]
+    },
+    {
+      id: 3,
+      name: 'Salad',
+      cookTime: '15 mins',
+      category: 'Vegetarian',
+      ingredients: [
+        '2 cups lettuce',
+        '1/2 cucumber',
+        '1/2 cup tomatoes',
+        '1/4 red onion',
+        '2 tbsp olive oil'
+      ],
+      instructions: [
+        'Wash all vegetables',
+        'Combine ingredients',
+        'blah',
+        'blah',
+        'blah'
+      ]
+    },
+    {
+      id: 3,
+      name: 'Chicken Alfredo Pasta',
+      cookTime: '30 mins',
+      category: 'Pasta',
+      ingredients: [
+        '8 oz fettuccine',
+        '2 chicken breasts',
+        '2 cups heavy cream',
+        '1/2 cup grated parmesan'
+      ],
+      instructions: [
+        'Cook pasta in a pot',
+        'Season chicken and cook in skillet until done',
+        'more instructions',
+        'more instructions',
+        'more instructions',
+        'more instructions'
+      ]
+    },
+  ];
+
+
+
+export default function RecipeDetails() {
+
+    // recipeID is from URL parameters, like /recipe/1
+    const { recipeId } = useParams();
+    const navigate = useNavigate();
+    
+    //find the recipe in our mock data
+    const recipe = mockRecipes.find(r => r.id === parseInt(recipeId));
+
+    // event handler for back button click to go to dashboard
+    const handleBack = () => {
+        navigate('/dashboard');
+    };
+
+
+    // if recipe is not found, allow the user to go back to dashboard
+    if ( !recipe ) {
+        return (
+            <div className="recipe-details-container">
+                <p> Recipe not found. </p>
+                <button onClick={handleBack} className="back-btn"> 
+                ← Back to Dashboard
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div className="recipe-details-container">
+            {/* button on top to go back to dashboard */}
+            <button onClick = {handleBack} className="back-btn"> 
+                    ← Back to Recipes
+            </button>
+            
+            <div className="recipe-header">
+                <h1>{recipe.name}</h1>
+
+                <div className="recipe-info">
+                    <span> ⏱️ {recipe.cookTime} </span>
+                    <span> 🏷️ {recipe.category} </span>
+                </div>
+            </div>
+
+            <div className="recipe-content">
+                <div className="recipe-section">
+                    <h2>Ingredients</h2>
+                    <ul className="ingredients-list">
+                        {/* list each ingredient */}
+                        { recipe.ingredients.map( (ingredient, index) => (
+                            <li key = {index}>
+                                {ingredient}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+
+                <div className="recipe-section">
+                    <h2>Instructions</h2>
+                    <ol className="instructions-list">
+                        {/* list through  instructions */}
+                        { recipe.instructions.map( ( step, index) => (
+                            <li key = {index}>{step}</li>
+                        ))}
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+    );
+}
