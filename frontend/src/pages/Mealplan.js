@@ -210,6 +210,7 @@ export default function Mealplan(){
     };
 
     const [showSavePlan, setShowSavePlan] = useState(false);
+    const [textInput, setTextInput] = useState('');
 
     // This will generate meals using the api in the format above
     const GenerateMeals = () => {
@@ -240,6 +241,15 @@ export default function Mealplan(){
         }
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!textInput) {
+            alert('Please enter your goals for the week.');
+            return
+        }
+    };
+
     return(
         // Everything will be inside this container
         <div className = "mealplan-container">
@@ -247,6 +257,20 @@ export default function Mealplan(){
             {/* Title of the page */}
             <div className = "input-box">
                 <h1>Meal Plan</h1>
+            </div>
+
+
+            {/* The input box for the user */}
+            <div className = "input-box">
+                <form onSubmit={handleSubmit}>
+                    <input
+                    type="text"
+                    placeholder="What are your diet goals for the week? 🍕🥞🍖🍣"
+                    value={textInput}
+                    onChange={(e) => setTextInput(e.target.value)}
+                    />
+                    <button type = "submit">🥄</button>
+                </form>
             </div>
 
             {/* Button to generate meals*/}
