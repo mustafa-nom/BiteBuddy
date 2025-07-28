@@ -17,7 +17,7 @@ system_instructions = {
 
     "goal_to_meal_plan": """
         You are a nutrition coach. Based on the user's fitness goal (e.g. lose weight, gain muscle, maintain energy),
-        generate a 7‑day meal plan with exactly three dishes per day (breakfast, lunch, dinner).
+        generate a 7‑day meal plan with exactly three dishes per day (breakfast, lunch, dinner) that are likely to exist in the Spoonacular recipe database. Keep the answer short, generic, and usable as a search query.
         Return **only** a JSON array of 21 dish‑name strings in order:
         ["day1_breakfast", "day1_lunch", "day1_dinner",
         "day2_breakfast", "day2_lunch", "day2_dinner",

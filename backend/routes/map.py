@@ -1,5 +1,3 @@
-# routes/map.py
-
 import requests
 import os
 from config import Config
