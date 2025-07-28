@@ -7,6 +7,7 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import Recipe from './pages/Recipes'
 import Fridge from './pages/Fridge'
+import RecipeDetails from './pages/RecipeDetails'
 
 import Navbar from './components/Navbar'
 
@@ -62,6 +63,19 @@ const handleLogout = () => {
             element = {
               <Fridge/>
             }
+          />
+
+          <Route
+            path = "/recipedetails"
+            element = {
+              <RecipeDetails/>
+            }
+          />
+
+          
+          <Route 
+            path="/recipe/:recipeId" 
+            element={<RecipeDetails />} 
           />
     
 
