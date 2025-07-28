@@ -62,15 +62,15 @@ export default function Signup({ onSignupSuccess }) {
 
   return (
     <Card className="w-full max-w-sm mx-auto mt-10 bg-background">
-      <form onSubmit={handleSubmit}>
-        <CardHeader className="text-center">
+      <form onSubmit={handleSubmit} className="p-6">
+        <CardHeader className="text-center mb-6">
           <CardTitle>Create an account</CardTitle>
-          <CardDescription>
+          <CardDescription className="mt-3 mb-4">
             Enter your username & password below to create your account.
           </CardDescription>
         </CardHeader>
 
-        <CardContent className="flex flex-col gap-4">
+        <CardContent className="flex flex-col gap-6">
           <div className="grid gap-2">
             <Input
               type="text"
@@ -97,7 +97,7 @@ export default function Signup({ onSignupSuccess }) {
         </CardContent>
 
         <CardFooter className="flex flex-col gap-2">
-          <Button type="submit" className="w-full">
+          <Button type="submit" className="bg-green-500 text-white hover:bg-green-600 focus-visible:ring-green-500 py-3 px-8">
             Create account
           </Button>
           <p className="text-sm text-center mt-2">
@@ -111,3 +111,4 @@ export default function Signup({ onSignupSuccess }) {
     </Card>
   );
 }
+
