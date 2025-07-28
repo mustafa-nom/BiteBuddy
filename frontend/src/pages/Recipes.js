@@ -53,7 +53,7 @@ export default function Recipe(){
             
             {/* This will hold the title such as RECIPE*/}
             <div className = "recipe-header">
-                <h1>Recipes</h1>
+                <h1 id="page-header">Recipes</h1>
                 <p>Generate a recipe based on your mood</p>
             </div>
 

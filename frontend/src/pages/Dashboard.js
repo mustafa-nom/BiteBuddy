@@ -55,7 +55,7 @@ export default function Dashboard({ username }) {
     return (
         <div className="dashboard-container">
             <div className="dashboard-header">
-                <h1>Welcome to BiteBuddy, {username}!</h1>
+                <h1 id="page-header">Welcome to BiteBuddy, {username}!</h1>
             </div>
 
             <div className="dashboard-tabs">
@@ -104,11 +104,11 @@ export default function Dashboard({ username }) {
                 ) : (
                     //link user to recipe for each meal in meal
                     <div className="meal-plan">
-                        <h2>This Week's Meal Plan</h2>
+                        <h2 id="meal-plan-header" >This Week's Meal Plan</h2>
                         {mealPlan.map(day => (
                             // use day as index for map
                             <div key={day.day} className="day-plan">
-                                <h3>{day.day}</h3>
+                                <h3 id="day-of-week">{day.day}</h3>
                                 <ul>
 
                                     {day.meals.map((meal, index) => (

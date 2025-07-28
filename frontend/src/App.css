@@ -255,6 +255,10 @@ body {
 
 
 /* RECIPE */
+.recipe-details-container h2{
+  font-size: 1.2rem;
+}
+
 .recipe-header {
   text-align: center;
   color: #28832b;
@@ -267,9 +271,28 @@ body {
 }
 
 .input-box input[type="text"] {
-  width: 350px; /* or any value you prefer */
+  width: 500px; /* or any value you prefer */
   max-width: 90%;
-  font-size: 1rem;
+  font-size: 1.2rem;
+  padding: 0.8rem; 
+  border-radius: 12px;
+  border: 1px solid;
+  border-color: #649568;
+}
+
+.input-box button {
+  padding: 0.8rem;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  margin-left: 0.5rem;
+  background-color: rgb(255, 255, 255);
+  border-color: #649568;
+  transition: all 0.3s ease;
+  border: 1px solid;
+  border-color: #649568;
+}
+.input-box button:hover {
+  background-color: rgb(166, 222, 164);
 }
 
 .recipe-box{
@@ -498,7 +521,7 @@ body {
 
 .fridge-item {
   background: #f8f8f8;
-  padding: 0.6rem 1rem;
+  padding: 1.3rem 1rem;
   border-radius: 20px;
   display: flex;
   align-items: center;
@@ -508,7 +531,7 @@ body {
   height: 20px;
   align-items: center;
   gap: 0.8rem;
-  margin-bottom: 5px;
+  margin-bottom: 3.3px;
 }
 
 .fridge-item:hover {
@@ -614,7 +637,7 @@ body {
 
 /* door open state */
 #fridge-bottom.door-open {
-  transform: perspective(80rem) rotateY(100deg);
+  transform: perspective(90rem) rotateY(110deg);
   box-shadow: -10px 0 15px rgba(0, 0, 0, 0.2);
   /* ensure it appears above other elements when open */
   z-index: 10; 
@@ -635,7 +658,7 @@ body {
   position: relative;
   flex:1;
   min-height: 400px;
-  width: 98%;
+  width: 100%;
   border-color: rgb(77, 77, 77);
   border-width: 5px;
   border-radius: 8px;
@@ -693,7 +716,7 @@ body {
 .fridge-shelves::before {
   content: "";
   position: absolute;
-  top: 10px;
+  top: 0;
   left: 0;
   right: 0;
   bottom: 0;
@@ -895,3 +918,25 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 2px 5px rgba(0,0,0,0.15);
 }
+
+
+
+
+/* random font styling */
+#page-header {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.fridge-container h2 {
+  font-weight: bold;
+  font-size: 1.2rem;
+  margin-bottom: 10px;
+}
+
+#meal-plan-header {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+

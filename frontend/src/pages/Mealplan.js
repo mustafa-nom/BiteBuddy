@@ -215,7 +215,7 @@ export default function Mealplan(){
             
             {/* Title of the page */}
             <div className = "input-box">
-                <h1>Meal Plan</h1>
+                <h1 id="page-header">Meal Plan</h1>
             </div>
 
             {/* Button to generate meals*/}
