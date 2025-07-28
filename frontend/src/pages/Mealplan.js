@@ -234,7 +234,7 @@ export default function Mealplan(){
                     <div className = "day-container" key={day}>
                         
                         {Object.entries(meals).map(([mealType, recipe]) => (
-                            <div className = "recipe-container">
+                            <div className = "mealplan-recipes">
                                 <div className = "recipe-card" key={recipe.id}>
                                     <img src = {recipe.img}></img>
                                     <h3>{mealType}</h3>
