@@ -17,7 +17,7 @@ export default function Recipe(){
             cookTime: '30 mins', 
             instructions: "Step 1: Do this Step 2: Do that", 
             neededIngredients: "Pasta, Tomato Sauce, Chicken",
-            img: "insert image url",
+            img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS5EuVYEm22v_-iy2vFQ-4niAT7Dk4uzs_CYA&s",
             type: "Main Dish"
         }
     ];
@@ -49,15 +49,16 @@ export default function Recipe(){
 
     return(
         // Everything will be inside this container
-        <div className = "recipe-container">
+        <div className = "recipe-box">
             
             {/* This will hold the title such as RECIPE*/}
             <div className = "recipe-header">
                 <h1>Recipes</h1>
+                <p>Generate a recipe based on your mood</p>
             </div>
 
             {/* This will hold the user input button and the recipes that are output */}
-            <div className = "recipe-content">
+            <div>
 
                 {/* The input box for the user */}
                 <div className = "input-box">
@@ -74,7 +75,7 @@ export default function Recipe(){
                 </div>
 
                 {/* This is where are the generated recipes will go */}
-                <div className = "generated-recipes">
+                <div className = "recipe-container">
 
                     {/* Placeholder card for what a recipe will look like */}
                     <div className = "recipe-card">

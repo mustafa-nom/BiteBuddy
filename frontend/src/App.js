@@ -3,13 +3,13 @@ import { Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 
 import './App.css';
 
-import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import Recipe from './pages/Recipes';
-import Fridge from './pages/Fridge';
-import Signup from './pages/Signup';
+import Login from './pages/Login'
+import Dashboard from './pages/Dashboard'
+import Recipe from './pages/Recipes'
+import Fridge from './pages/Fridge'
 
-import Navbar from './components/Navbar';
+import Mealplan from './pages/Mealplan'
+import Navbar from './components/Navbar'
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -55,13 +55,33 @@ function App() {
               )
             }
           />
+
           <Route path="/recipes" element={<Recipe />} />
+
           <Route
             path="/fridge"
-            element={
-              isLoggedIn ? <Fridge username={currentUser} /> : <Navigate to="/" />
+            element={isLoggedIn ? <Fridge username={currentUser} /> : <Navigate to="/" />}
+          />
+
+          <Route
+            path = "/recipedetails"
+            element = {
+              <RecipeDetails/>
             }
           />
+
+          
+          <Route 
+            path="/recipe/:recipeId" 
+            element={<RecipeDetails />} 
+          />
+    
+            <Route
+              path = "/mealplan"
+              element = {
+                <Mealplan/>
+              }
+            />
         </Routes>
       </div>
     </>
