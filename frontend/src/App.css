@@ -342,14 +342,15 @@ body {
   justify-content: space-between; 
   gap: 2rem;
   margin-top: 1.5rem;
-  align-items: flex-start;
+  /* align-items: flex-start; */
+  align-items: stretch;
 }
 
 .fridge-column {
   width: 50%;
   display: flex;
   flex-direction: column;
-  min-height: 100%; 
+  /* min-height: 100%;  */
 }
 
 /* left column where user adds ingredients */
@@ -369,6 +370,8 @@ body {
   border-radius: 12px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
 }
 
 .fridge-header {
@@ -562,7 +565,7 @@ body {
 
 /* door open state */
 #fridge-bottom.door-open {
-  transform: perspective(80rem) rotateY(95deg);
+  transform: perspective(80rem) rotateY(100deg);
   box-shadow: -10px 0 15px rgba(0, 0, 0, 0.2);
   /* ensure it appears above other elements when open */
   z-index: 10; 
@@ -581,6 +584,7 @@ body {
 
 .fridge-body {
   position: relative;
+  flex:1;
   min-height: 400px;
   width: 98%;
   border-color: rgb(77, 77, 77);
@@ -598,7 +602,7 @@ body {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   background-color: #f8f8f8;
   z-index: 1;
   padding: 1rem;
