@@ -283,6 +283,10 @@ body {
   margin: 50px 0;
 }
 
+.recipe-box p {
+  color:#2e7d32;
+}
+
 .recipe-container {
   width: 50%;
   margin: 0 auto;
@@ -586,6 +590,10 @@ body {
   align-items: stretch;
 }
 
+.mealplan-container p {
+  text-align: center;
+  color: #2e7d32;
+}
 .mealplan-recipes {
   width: 50%;
   margin: 0 auto;

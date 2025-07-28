@@ -1,12 +1,14 @@
-import { useState } from 'react';
 import parse from 'html-react-parser';
 import '../App.css';
 import { Button } from '../components/ui/Button';
+import { useEffect, useState } from 'react';
+import { addDietaryRestriction, addIngredient, removeIngredient, getUserData, removeDietaryRestriction } from '../database.js';
 
 export default function Recipe(){
 
     const [textInput, setTextInput] = useState('');
     const [recipes, setRecipes] = useState([]);
+    const [showRecipes, setShowRecipes] = useState(false);
 
 
     // TODO sample data for the recipe card
@@ -29,13 +31,14 @@ export default function Recipe(){
             alert('Please enter your mood or type of dish you want to eat.');
             return
         }
-
+        setShowRecipes(!showRecipes)
         try {
             const res = await fetch(`http://localhost:5000/recipes/suggest?mood=${encodeURIComponent(textInput)}`);
             const data = await res.json();
 
             if (data.recipes) {
                 setRecipes(data.recipes);
+                console.log('data.recipes:', recipes);
             } else {
                 alert("No recipes found.");
                 setRecipes([]);
@@ -46,6 +49,35 @@ export default function Recipe(){
             alert('Failed getting recipes. Try again.')
         }
     };
+
+
+    useEffect(() => {
+        console.log('recipes updated:', recipes);
+    }, [recipes]);
+
+    // This will save the recipe to the database
+    const SaveRecipe = () => {
+
+    };
+
+    // This will shuffle the recipe for a new one KEEP THIS COMMENTED UNTIL WE WORK ON IT
+    // const ShuffleRecipe = () => {
+    //     try {
+    //         const res = await fetch(`http://localhost:5000/recipes/suggest?mood=${encodeURIComponent(textInput)}`);
+    //         const data = await res.json();
+
+    //         if (data.recipes) {
+    //             setRecipes(data.recipes);
+    //         } else {
+    //             alert("No recipes found.");
+    //             setRecipes([]);
+    //         }
+    //         setTextInput('');
+    //     } catch (e) {
+    //         console.log('failed to fetch recipes', e)
+    //         alert('Failed getting recipes. Try again.')
+    //     }
+    // }
 
     return(
         // Everything will be inside this container
@@ -74,27 +106,35 @@ export default function Recipe(){
                     
                 </div>
 
-                {/* This is where are the generated recipes will go */}
+                {showRecipes ? (
+                
+                // This is where all the generated recipes will go
                 <div className = "recipe-container">
 
                     {/* Placeholder card for what a recipe will look like */}
-                    <div className = "recipe-card">
+                    
                         {recipes.map (recipe => (
                             <div key = {recipe.id} className = "recipe-card">
+                                <img src = {recipe.image}></img>
                                 <h3>{recipe.title}</h3>
-                                <img src = {recipe.image} alt={recipe.title}></img>
-                                <h4>Type: {recipe.type}</h4>
-                                <h4>Time required: ~{recipe.cookTime}</h4>
-                                <h4>Ingredients: {recipe.neededIngredients}</h4>
-                                    <div className="instructions">
-                                        {parse(recipe.instructions)}
-                                     </div>
-                                <button className = "saveButton">Save Recipe</button>
-                                <Button>Save Recipe</Button>
+
+                                {/* This is not used because api doesnt give it
+                                <h4>{recipe.type}</h4>
+                                <h4>{recipe.cookTime}</h4>
+                                <h4>{recipe.neededIngredients}</h4>
+                                <p>{recipe.instructions}</p> */}
+                                
+                                <div className = "button-list">
+                                    {/* TODO add a basic functionality to the buttons */}
+                                    <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
+                                    {/* <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
+                                </div>
                             </div>
                         ))}
                     </div>
-                </div>
+                ) : (
+                <p>Create recipe!</p>
+                )}
             </div>
         </div>
     );
