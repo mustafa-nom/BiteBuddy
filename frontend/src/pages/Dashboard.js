@@ -92,7 +92,7 @@ export default function Dashboard({ username }) {
                                             <h3> {recipe.name} </h3>
                                             <p> Time: {recipe.cookTime} </p>
                                             <p> Category: {recipe.category} </p>
-                                            <button className="view-btn">View Recipe</button>
+                                            <button className="view-btn" onClick={() => handleRecipeClick(recipe.id)}>View Recipe</button>
                                         </li>
                                     ))}
                                 </ul>
