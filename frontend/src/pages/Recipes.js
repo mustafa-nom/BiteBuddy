@@ -3,7 +3,7 @@ import { useState } from 'react';
 export default function Recipe(){
 
     const [textInput, setTextInput] = useState('');
-    const [savedInput, setSavedInput] = useState('');
+    const [recipes, setRecipes] = useState([]);
 
 
     // TODO sample data for the recipe card
@@ -19,15 +19,28 @@ export default function Recipe(){
         }
     ];
 
-    // This will save the input for gemini to use after the user hits the submit button
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        if (textInput) {
-            setSavedInput(textInput);
-            setTextInput('');
-        }
-        else {
+
+        if (!textInput) {
             alert('Please enter your mood or type of dish you want to eat.');
+            return
+        }
+
+        try {
+            const res = await fetch(`http://localhost:5000/recipes/suggest?mood=${encodeURIComponent(textInput)}`);
+            const data = await res.json();
+
+            if (data.recipes) {
+                setRecipes(data.recipes);
+            } else {
+                alert("No recipes found.");
+                setRecipes([]);
+            }
+            setTextInput('');
+        } catch (e) {
+            console.log('failed to fetch recipes', e)
+            alert('Failed getting recipes. Try again.')
         }
     };
 
@@ -62,10 +75,10 @@ export default function Recipe(){
 
                     {/* Placeholder card for what a recipe will look like */}
                     <div className = "recipe-card">
-                        {generatedRecipe.map (recipe => (
+                        {recipes.map (recipe => (
                             <li key = {recipe.id} className = "recipe-card">
-                                <img src = {recipe.img}></img>
-                                <h3>{recipe.name}</h3>
+                                <img src = {recipe.image} alt={recipe.title}></img>
+                                <h3>{recipe.title}</h3>
                                 <h4>{recipe.type}</h4>
                                 <h4>{recipe.cookTime}</h4>
                                 <h4>{recipe.neededIngredients}</h4>
