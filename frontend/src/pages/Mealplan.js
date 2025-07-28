@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import { useEffect, useState } from 'react';
+=======
+import { useState } from 'react';
+>>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
 
 export default function Mealplan(){
 
@@ -211,7 +215,10 @@ export default function Mealplan(){
 
     const [showSavePlan, setShowSavePlan] = useState(false);
     const [textInput, setTextInput] = useState('');
+<<<<<<< HEAD
     const [recipes, setRecipes] = useState([]);
+=======
+>>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
 
     // This will generate meals using the api in the format above
     const GenerateMeals = () => {
@@ -249,8 +256,11 @@ export default function Mealplan(){
             alert('Please enter your goals for the week.');
             return
         }
+<<<<<<< HEAD
         setShowSavePlan(!showSavePlan)
         
+=======
+>>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
     };
 
     return(
@@ -276,11 +286,18 @@ export default function Mealplan(){
                 </form>
             </div>
 
+<<<<<<< HEAD
             {/* Button to generate meals DONT NEED TO GENERATE MEALS ANYMORE SINCE WE ARE USING A TEXTBOX*/}
             {/* <div className = "center-btn" id = "top">
                 <button className = "view-btn" onClick={GenerateMeals}>Generate Meals 🍽</button>
             </div> */}
 
+=======
+            {/* Button to generate meals*/}
+            <div className = "center-btn" id = "top">
+                <button className = "view-btn" onClick={GenerateMeals}>Generate Meals 🍽</button>
+            </div>
+>>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
             {showSavePlan && (
                 <div className = "center-btn">
                     <button className = "view-btn" onClick={SavePlan}>Save Plan</button>
@@ -326,7 +343,11 @@ export default function Mealplan(){
                                     <div className = "button-list">
                                         {/* TODO add a basic functionality to the buttons */}
                                         <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
+<<<<<<< HEAD
                                         {/* <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
+=======
+                                        <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button>
+>>>>>>> fc075b3b33a2a81e37781e51460d91f45e8a9a87
                                     </div>
                                 </div>
                             </div>
