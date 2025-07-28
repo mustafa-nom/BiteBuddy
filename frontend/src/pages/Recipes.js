@@ -4,6 +4,7 @@ export default function Recipe(){
 
     const [textInput, setTextInput] = useState('');
     const [recipes, setRecipes] = useState([]);
+    const [showRecipes, setShowRecipes] = useState(false);
 
 
     // TODO sample data for the recipe card
@@ -26,7 +27,8 @@ export default function Recipe(){
             alert('Please enter your mood or type of dish you want to eat.');
             return
         }
-
+        setShowRecipes(!showRecipes)
+        
         try {
             const res = await fetch(`http://localhost:5000/recipes/suggest?mood=${encodeURIComponent(textInput)}`);
             const data = await res.json();
@@ -43,6 +45,16 @@ export default function Recipe(){
             alert('Failed getting recipes. Try again.')
         }
     };
+
+    // This will save the recipe to the database
+    const SaveRecipe = () => {
+
+    };
+
+    // This will shuffle the recipe for a new one
+    const ShuffleRecipe = () => {
+
+    }
 
     return(
         // Everything will be inside this container
@@ -71,7 +83,9 @@ export default function Recipe(){
                     
                 </div>
 
-                {/* This is where are the generated recipes will go */}
+                {showRecipes ? (
+                
+                // This is where all the generated recipes will go
                 <div className = "recipe-container">
 
                     {/* Placeholder card for what a recipe will look like */}
@@ -86,13 +100,16 @@ export default function Recipe(){
                                 <p>{recipe.instructions}</p>
                                 <div className = "button-list">
                                     {/* TODO add a basic functionality to the buttons */}
-                                    <button className = "view-btn">Save Recipe</button>
-                                    <button className = "view-btn">Shuffle Recipe</button>
+                                    <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
+                                    <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button>
                                 </div>
                             </div>
                         ))}
                     
                 </div>
+                ) : (
+                <p>Create recipe!</p>
+                )}
             </div>
         </div>
     );
