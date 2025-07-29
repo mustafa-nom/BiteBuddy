@@ -15,12 +15,13 @@ SPOON_API_KEY = os.getenv('SPOONACULAR_API_KEY')
 def suggest_recipes_by_mood():
     # get mood from user input
     mood = request.args.get('mood')
-    if not mood:
-        return jsonify({"error": "no mood given for recipes input"}), 500
+    username = request.args.get("username")
+    if not mood or not username:
+        return jsonify({"error": "no mood given for recipes input or missing username"}), 500
     
     # gemini uses mood --> recipes for user to view
     try:
-        food_keywords = get_recipe_from_mood(mood)
+        food_keywords = get_recipe_from_mood(mood, username)
     except Exception as e:
         return jsonify({"error": f"gemini cant get mood query: {str(e)}"}), 500
     

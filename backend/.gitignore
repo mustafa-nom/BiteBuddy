@@ -55,3 +55,5 @@ dist/
 
 # Node/npm
 node_modules/
+
+biteBuddySDK.json

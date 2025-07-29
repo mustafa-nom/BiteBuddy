@@ -63,7 +63,7 @@ function App() {
           <Route
             path="/recipes"
             element={
-              isLoggedIn ? <Recipe /> : <Navigate to="/" />
+              isLoggedIn ? <Recipe username={currentUser} />: <Navigate to="/" />
             }
           />
 

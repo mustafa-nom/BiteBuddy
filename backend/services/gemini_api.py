@@ -5,14 +5,18 @@ import requests
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from config import Config
 import json
+from services.firebase_user import get_user_data
 
 # set up w/ key and model instructions
 genai.configure(api_key=Config.GEMINI_API_KEY)
 system_instructions = {
     "mood_to_recipe": """
-        You are a recipe assistant. Based on a user's mood or craving, respond with 2 or 3 specific dish or food names that are popular and likely to exist in the Spoonacular recipe database while also being possible to be made with the current user's fridge ingredients.
-        Return them as a short, comma-separated list (e.g., "chocolate cake, scrambled eggs, french toast").
-        Do not explain anything or include full sentences. Keep the answer short and usable as a search query.
+        You are a recipe assistant. The user will give you:
+        1. a mood or craving,
+        2. a list of ingredients currently in their fridge.
+        Suggest 2 or 3 realistic dishes that fit the user's mood and can be made using some or all of their available ingredients. 
+        Your answers should be popular, likely to exist in the Spoonacular database, and use the fridge items when possible.
+        Return only a comma-separated list of the dish names. No sentences, no extra words.
     """,
 
     "goal_to_meal_plan": """
@@ -37,9 +41,22 @@ def get_model(purpose):
 
 # return list of recipes based on mood AND user's ingredients
 # add Firebase user fridge_ingredients
-def get_recipe_from_mood(mood_txt):
+def get_recipe_from_mood(mood_txt, username):
+    user_data = get_user_data(username)
+    if not user_data or "fridge_ingredients" not in user_data:
+        raise ValueError("No fridge ingredients found for this user.")
+    
+    fridge_ingredients = user_data["fridge_ingredients"]
+    ingredient_list = ", ".join(fridge_ingredients)
+
+    prompt = (
+        f"My mood is: {mood_txt}\n"
+        f"My fridge has the following ingredients: {ingredient_list}\n"
+        "Suggest 2 or 3 dishes that match the mood and can be made from these ingredients."
+    )
+
     model = get_model("mood_to_recipe")
-    response = model.generate_content(mood_txt)
+    response = model.generate_content(prompt)
     raw_text = response.text.strip()
     recipe_names = [item.strip() for item in raw_text.split(',') if item.strip()]
     return recipe_names

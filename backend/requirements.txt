@@ -6,3 +6,4 @@ spoonacular
 google-genai
 google-generativeai
 pytest
+firebase-admin
