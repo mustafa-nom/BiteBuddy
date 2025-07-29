@@ -99,4 +99,3 @@ describe("Database helper tests", () => {
 });
 
 
-

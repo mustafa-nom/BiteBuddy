@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import parse from 'html-react-parser';
+import '../App.css';
 
 export default function Mealplan(){
 
@@ -250,16 +252,24 @@ export default function Mealplan(){
             alert('Please enter your goals for the week.');
             return
         }
-        setLoading(true);
-        setShowSavePlan(false);
+        setShowSavePlan(!showSavePlan)
 
-        // Simulate API call
-        setTimeout(() => {
-            setRecipes(['mock']);
-            setLoading(false);
-            setShowSavePlan(true);
-        }, 1000);
-        
+        try {
+            const res = await fetch(`http://localhost:5000/meal_plan/suggest?goal=${encodeURIComponent(textInput)}`);
+            const data = await res.json();
+            
+            if (data.recipes) {
+                setRecipes(data.recipes);
+                console.log('data.recipes:', data.recipes);
+            } else {
+                alert("No recipes found.");
+                setRecipes({});
+            }
+            setTextInput('');
+        } catch (e) {
+            console.log('failed to fetch recipes', e)
+            alert('Failed getting recipes. Try again.')
+        }
     };
 
     return(
@@ -310,35 +320,46 @@ export default function Mealplan(){
                 </form>
             </div>
 
-            <div className="w-1/2 mx-auto mt-8 text-center">
-                {recipes.length == 0 && !showSavePlan && (
-                    <p className="text-gray-600">You haven't chosen your weekly goal. Input a goal for a customized meal plan!</p>
-                )}
+            {/* Button to generate meals DONT NEED TO GENERATE MEALS ANYMORE SINCE WE ARE USING A TEXTBOX*/}
+            {/* <div className = "center-btn" id = "top">
+                <button className = "view-btn" onClick={GenerateMeals}>Generate Meals 🍽</button>
+            </div> */}
 
-                {recipes.length > 0 && showSavePlan && (
-                <div className = "center-btn">
-                    <button className = "view-btn" onClick={SavePlan}>Save Plan</button>
+            {Object.keys(recipes).length == 0 && !showSavePlan && (
+                <p id="empty-text">Generate a meal plan!</p>
+            )}
 
-                    <h2 id="empty-text">Go To</h2>
-                    <div className="button-list">
-                        <button className ="view-btn" onClick={() => scrollTo("Sunday")}>Sunday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Monday")}>Monday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Tuesday")}>Tuesday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Wednesday")}>Wednesday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Thursday")}>Thursday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Friday")}>Friday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Saturday")}>Saturday</button>
-                    </div>
+            {Object.keys(recipes).length > 0 && showSavePlan && (
+            <div className = "center-btn">
+                <button className = "view-btn" onClick={SavePlan}>Save Plan</button>
+
+                <h2 id="empty-text">Go To</h2>
+                <div className="button-list">
+                    <button className ="view-btn" onClick={() => scrollTo("Sunday")}>Sunday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Monday")}>Monday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Tuesday")}>Tuesday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Wednesday")}>Wednesday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Thursday")}>Thursday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Friday")}>Friday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Saturday")}>Saturday</button>
                 </div>
-                )}
+            </div>
+            )}
 
-                <div>
-                    {showSavePlan && recipes.length > 0 && (
-                    Object.entries(generatedRecipes).map(([day, meals]) => (
-                        <>
-                            <div className = "day-header" id = {day}>
-                                <h2>{day}</h2>
-                            </div>
+       
+            
+            
+
+            {/* Contains ALL THE GENERATED MEALS */}
+
+            
+            <div>
+                {showSavePlan && Object.keys(recipes).length > 0 && (
+                Object.entries(recipes).map(([day, meals]) => (
+                    <>
+                        <div className = "day-header" id = {day}>
+                            <h2>{day}</h2>
+                        </div>
 
                             <div className = "day-container" key={day}>
                                 {Object.entries(meals).map(([mealType, recipe]) => (

@@ -64,7 +64,7 @@ def get_recipe_from_mood(mood_txt, username):
 # create 7-day meal plan based on user goal
 def generate_meal_plan(meal_plan_goal):
     model = get_model("goal_to_meal_plan")
-    prompt = f"Given my meal plan goal, create a full week meal plan: {meal_plan_goal}"
+    prompt = f"Create a full week plan for this goal: {meal_plan_goal}"
     response = model.generate_content(prompt)
     raw = response.text.strip()
     if raw.startswith("```"):
