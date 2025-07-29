@@ -155,6 +155,27 @@ export async function getRecipes(username) {
   }));
 }
 
+export async function getRecipeById(username, recipeId) {
+  try {
+    const userData = await getUserData(username);
+    const recipesMap = userData?.saved_recipes || {};
+    const recipesArray = Object.values(recipesMap);
+    // Find recipe by id (as number)
+    const matchedRecipe = recipesArray.find(r => r.id === parseInt(recipeId));
+
+    if (!matchedRecipe) {
+      console.log("Recipe not found with id:", recipeId);
+      return null;
+    }
+
+    return matchedRecipe;
+  } catch (err) {
+    console.error("Error getting recipe:", err);
+    return null;
+  }
+}
+
+
 
 export async function getDietaryRestrictions(username) {
   try {
