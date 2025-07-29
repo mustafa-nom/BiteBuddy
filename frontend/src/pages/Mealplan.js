@@ -260,7 +260,7 @@ export default function Mealplan(){
             {/* Title of the page */}
             <div className = "input-box">
                 <h1 id="page-header">Meal Plan</h1>
-                <p id="recipe-instruct"> 🍎 Generate a 7-day meal plan based on your mood 🍎 </p>
+                <p id="recipe-instruct"> 🍎 Generate a 7-day meal plan based on your goals 🍎 </p>
             </div>
 
 
@@ -282,66 +282,69 @@ export default function Mealplan(){
                 <button className = "view-btn" onClick={GenerateMeals}>Generate Meals 🍽</button>
             </div> */}
 
-            {showSavePlan && (
-                <div className = "center-btn">
-                    <button className = "view-btn" onClick={SavePlan}>Save Plan</button>
-
-                    <h2>Go To</h2>
-                    <div className="button-list">
-                        <button className ="view-btn" onClick={() => scrollTo("Sunday")}>Sunday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Monday")}>Monday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Tuesday")}>Tuesday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Wednesday")}>Wednesday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Thursday")}>Thursday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Friday")}>Friday</button>
-                        <button className ="view-btn" onClick={() => scrollTo("Saturday")}>Saturday</button>
-
-                    </div>
-                </div>
-
+            {recipes.length == 0 && !showSavePlan && (
+                <p id="empty-text">Generate a meal plan!</p>
             )}
+
+            {recipes.length > 0 && showSavePlan && (
+            <div className = "center-btn">
+                <button className = "view-btn" onClick={SavePlan}>Save Plan</button>
+
+                <h2 id="empty-text">Go To</h2>
+                <div className="button-list">
+                    <button className ="view-btn" onClick={() => scrollTo("Sunday")}>Sunday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Monday")}>Monday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Tuesday")}>Tuesday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Wednesday")}>Wednesday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Thursday")}>Thursday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Friday")}>Friday</button>
+                    <button className ="view-btn" onClick={() => scrollTo("Saturday")}>Saturday</button>
+                </div>
+            </div>
+            )}
+
+       
             
             
 
             {/* Contains ALL THE GENERATED MEALS */}
 
-            {showSavePlan ? 
+            
             <div>
-                {Object.entries(generatedRecipes).map(([day, meals]) => (
+                {showSavePlan && recipes.length > 0 && (
+                Object.entries(generatedRecipes).map(([day, meals]) => (
                     <>
-                    <div className = "day-header" id = {day}>
+                        <div className = "day-header" id = {day}>
                             <h2>{day}</h2>
-                    </div>
-                    <div className = "day-container" key={day}>
-                        
-                        {Object.entries(meals).map(([mealType, recipe]) => (
-                            <div className = "mealplan-recipes">
-                                <div className = "recipe-card" key={recipe.id}>
-                                    <img src = {recipe.img}></img>
-                                    <h3>{mealType}</h3>
-                                    <h3>{recipe.name}</h3>
-                                    <h4>{recipe.type}</h4>
-                                    <h4>{recipe.cookTime}</h4>
-                                    <h4>Needed Ingredients: {recipe.neededIngredients}</h4>
-                                    <p>{recipe.instructions}</p>
-                                    <div className = "button-list">
-                                        {/* TODO add a basic functionality to the buttons */}
-                                        <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
-                                        {/* <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
+                        </div>
+
+                        <div className = "day-container" key={day}>
+                            {Object.entries(meals).map(([mealType, recipe]) => (
+                                <div className = "mealplan-recipes">
+                                    <div className = "recipe-card" key={recipe.id}>
+                                        <h3 className = "text-2xl font-bold">{mealType}</h3>
+                                        <img src = {recipe.image}></img>
+                                        <h3 className = "text-2xl font-semibold">{recipe.name}</h3>
+                                        <h4>Food Type: {recipe.type}</h4>
+                                        <h4>Time: ~{recipe.cookTime}</h4>
+                                        <h4>Ingredients: {recipe.neededIngredients}</h4>
+                                        <p>{parseFloat(recipe.instructions)}</p>
+                                        <div className = "button-list">
+                                            {/* TODO add a basic functionality to the buttons */}
+                                            <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
+                                            {/* <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                    <div className = "center-btn">
-                        <button className="view-btn" onClick={() => scrollTo("top")}>Go To Top</button>
-                    </div>
+                            ))}
+                        </div>
+                        <div className = "center-btn">
+                            <button className="view-btn" onClick={() => scrollTo("page-header")}>Go To Top</button>
+                        </div>
                     </>
-                ))}
+                ))
+                )}
             </div>
-            :
-            <p id="empty-text">Generate a meal plan!</p>
-            }
         </div>
-    )
-};
+    );
+}
