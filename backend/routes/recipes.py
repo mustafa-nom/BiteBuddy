@@ -25,7 +25,7 @@ def suggest_recipes_by_mood():
         return jsonify({"error": f"gemini cant get mood query: {str(e)}"}), 500
     
     try:
-        recipe_results = get_recipes_from_keywords(food_keywords, 2)
+        recipe_results = get_recipes_from_keywords(food_keywords, 1)
     except Exception as e:
         return jsonify({"error": f"spoonacular api-call failed: {str(e)}"}), 500
     

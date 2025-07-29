@@ -117,12 +117,10 @@ export default function Recipe(){
                             <div key = {recipe.id} className = "recipe-card">
                                 <img src = {recipe.image}></img>
                                 <h3>{recipe.title}</h3>
-
-                                {/* This is not used because api doesnt give it
                                 <h4>{recipe.type}</h4>
-                                <h4>{recipe.cookTime}</h4>
-                                <h4>{recipe.neededIngredients}</h4>
-                                <p>{recipe.instructions}</p> */}
+                                <h4>Time: ~{recipe.cookTime}</h4>
+                                <h4>Ingredients: {recipe.neededIngredients}</h4>
+                                <p>{parse(recipe.instructions)}</p>
                                 
                                 <div className = "button-list">
                                     {/* TODO add a basic functionality to the buttons */}
@@ -133,7 +131,7 @@ export default function Recipe(){
                         ))}
                     </div>
                 ) : (
-                <p id="empty-text">Create a recipe!</p>
+                <p id="empty-text">Input your mood to get a recipe below!</p>
                 )}
             </div>
         </div>
