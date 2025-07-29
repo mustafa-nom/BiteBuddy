@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import parse from 'html-react-parser';
+import '../App.css';
 
 export default function Mealplan(){
 
@@ -211,13 +213,7 @@ export default function Mealplan(){
 
     const [showSavePlan, setShowSavePlan] = useState(false);
     const [textInput, setTextInput] = useState('');
-    const [recipes, setRecipes] = useState([]);
-
-    // This will generate meals using the api in the format above
-    const GenerateMeals = () => {
-        // This is mock funcationality to see if it toggles all the recipes
-        setShowSavePlan(!showSavePlan)
-    };
+    const [recipes, setRecipes] = useState({});
 
     // This will save the plan to view on the dashboard
     const SavePlan = () => {
@@ -250,7 +246,23 @@ export default function Mealplan(){
             return
         }
         setShowSavePlan(!showSavePlan)
-        
+
+        try {
+            const res = await fetch(`http://localhost:5000/meal_plan/suggest?goal=${encodeURIComponent(textInput)}`);
+            const data = await res.json();
+            
+            if (data.recipes) {
+                setRecipes(data.recipes);
+                console.log('data.recipes:', data.recipes);
+            } else {
+                alert("No recipes found.");
+                setRecipes({});
+            }
+            setTextInput('');
+        } catch (e) {
+            console.log('failed to fetch recipes', e)
+            alert('Failed getting recipes. Try again.')
+        }
     };
 
     return(
@@ -282,11 +294,11 @@ export default function Mealplan(){
                 <button className = "view-btn" onClick={GenerateMeals}>Generate Meals 🍽</button>
             </div> */}
 
-            {recipes.length == 0 && !showSavePlan && (
+            {Object.keys(recipes).length == 0 && !showSavePlan && (
                 <p id="empty-text">Generate a meal plan!</p>
             )}
 
-            {recipes.length > 0 && showSavePlan && (
+            {Object.keys(recipes).length > 0 && showSavePlan && (
             <div className = "center-btn">
                 <button className = "view-btn" onClick={SavePlan}>Save Plan</button>
 
@@ -311,8 +323,8 @@ export default function Mealplan(){
 
             
             <div>
-                {showSavePlan && recipes.length > 0 && (
-                Object.entries(generatedRecipes).map(([day, meals]) => (
+                {showSavePlan && Object.keys(recipes).length > 0 && (
+                Object.entries(recipes).map(([day, meals]) => (
                     <>
                         <div className = "day-header" id = {day}>
                             <h2>{day}</h2>

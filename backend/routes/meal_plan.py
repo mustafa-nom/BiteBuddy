@@ -4,7 +4,7 @@ import requests
 import os
 from dotenv import load_dotenv
 from services.gemini_api import generate_meal_plan
-from services.spoonacular_api import get_recipes_from_keywords
+from services.spoonacular_api import get_weekly_recipes_from_keywords
 
 load_dotenv()
 
@@ -23,7 +23,7 @@ def suggest_meal_plan():
         return jsonify({"error": f"gemini cant generate meal plan: {str(e)}"}), 500
 
     try:
-        recipe_results = get_recipes_from_keywords(food_keywords, 1)
+        recipe_results = get_weekly_recipes_from_keywords(food_keywords, 1)
     except Exception as e:
         return jsonify({"error": f"spoonacular api-call failed: {str(e)}"}), 500
 
