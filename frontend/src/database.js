@@ -216,6 +216,17 @@ export async function getMealPlans(username) {
   }
 }
 
+export async function removeMealPlan(username, day) {
+  try {
+    const ref = doc(db, 'users', username);
+    await updateDoc(ref, { [`meal_plans.${day}`]: deleteField() });
+    console.log("Meal plan removed for day:", day);
+  }
+  catch (err) {
+    console.error("Failed to remove meal plan: ", err);
+  }
+}
+
 
 
 // test run 
