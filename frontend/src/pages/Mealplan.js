@@ -340,7 +340,7 @@ export default function Mealplan(){
                 ))}
             </div>
             :
-            <p id="empty-text">Generate a mealplan!</p>
+            <p id="empty-text">Generate a meal plan!</p>
             }
         </div>
     )
