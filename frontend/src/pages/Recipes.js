@@ -2,9 +2,9 @@ import parse from 'html-react-parser';
 import '../App.css';
 import { Button } from '../components/ui/Button';
 import { useEffect, useState } from 'react';
-import { addDietaryRestriction, addIngredient, removeIngredient, getUserData, removeDietaryRestriction } from '../database.js';
+import { addRecipe } from '../database.js';
 
-export default function Recipe(){
+export default function Recipe({ username}){
 
     const [textInput, setTextInput] = useState('');
     const [recipes, setRecipes] = useState([]);
@@ -63,7 +63,32 @@ export default function Recipe(){
     }, [recipes]);
 
     // This will save the recipe to the database
-    const SaveRecipe = () => {
+    const SaveRecipe = async (e) => {
+        e.preventDefault();
+        // below code assumes we have these attributes!
+        if (recipes.length === 0) {
+            alert('No recipes to save. Please generate a recipe first.');
+            return;
+        }
+        try {
+            for (const recipe of recipes) { 
+            const recipeData = {
+                id: recipe.id, // do we need id?
+                title: recipe.title,
+                type: recipe.type,
+                cookTime: recipe.cookTime,
+                neededIngredients: recipe.neededIngredients,
+                instructions: recipe.instructions,
+                image: recipe.image
+            };
+
+            await addRecipe(username, recipeData);
+          }
+            alert('Recipe saved successfully!');
+        } catch (error) {
+            console.error('Failed to save recipe:', error);
+            alert('Failed to save recipe. Please try again.');
+        }
 
     };
 
