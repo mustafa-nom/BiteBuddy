@@ -100,7 +100,7 @@ export default function RecipeDetails() {
             </button>
             
             <div className="recipe-header">
-                <h1>{recipe.name}</h1>
+                <h1 id="page-header">{recipe.name}</h1>
 
                 <div className="recipe-info">
                     <span> ⏱️ {recipe.cookTime} </span>

@@ -259,7 +259,8 @@ export default function Mealplan(){
             
             {/* Title of the page */}
             <div className = "input-box">
-                <h1>Meal Plan</h1>
+                <h1 id="page-header">Meal Plan</h1>
+                <p id="recipe-instruct"> 🍎 Generate a 7-day meal plan based on your mood 🍎 </p>
             </div>
 
 
@@ -339,7 +340,7 @@ export default function Mealplan(){
                 ))}
             </div>
             :
-            <p>Generate a mealplan!</p>
+            <p id="empty-text">Generate a meal plan!</p>
             }
         </div>
     )

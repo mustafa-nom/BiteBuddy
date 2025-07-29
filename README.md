@@ -1,11 +1,38 @@
 # BiteBuddy
 
-Stuff here about features 
+BiteBuddy is an AI-powered nutrition planner that reduces food waste by generating personalized recipe ideas from ingredients you already have. It also creates customized meal plans based on your mood, dietary needs, and preferences.
+
+## Key Features 
+
+1. **Personalized Recipe Generation**
+   - Enter your current mood or cravings (e.g., "I'm feeling cozy", "I want something to boost my energy") to get tailored recipe suggestions.
+   - Uses **Google Gemini API** to interpret natural language queries and fetch relevant recipes from **Spoonacular API**.
+
+2. **Smart Ingredient Matching**
+   - Log ingredients available in your fridge/pantry via the **Fridge Page**.
+   - Recipes prioritize using ingredients you already own to minimize food waste.
+
+3. **Dietary Restriction Support**
+   - Set preferences like vegan, gluten-free, halal, etc. which all recommendations will take into account.
+
+4. **7-Day Meal Planning**
+   - Generate a full week of meals based on your mood, dietary needs, and available ingredients.
+
+5. **User Profiles & Storage**
+   - **Firebase Authentication** for secure user login/signup.
+   - **Firestore Database** to save:
+     - Saved recipes and meal plans (visible on **Dashboard**).
+     - Ingredients are saved to user's account (auto-populates the **Fridge Page**).
+
+6. **API Integrations**
+   - [**Spoonacular API**](https://spoonacular.com/food-api): Fetches recipes based on ingredients and dietary filters.
+   - [**Google Gemini API**](https://ai.google.dev/gemini-api/docs): Enhances query understanding for mood-based recommendations.
+
 
 ## Setup Instructions
-1. clone the repo
+1. Clone the repo
 ```bash
-git clone https://github.com/your-username/track-your-reps.git
+git clone https://github.com/mustafa-nom/BiteBuddy.git
 cd reptracker/backend
 ```
 2. Create local environment
