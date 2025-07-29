@@ -6,6 +6,9 @@ export default function Dashboard({ username }) {
     const [activeTab, setActiveTab] = useState('recipes');
     const navigate = useNavigate();
 
+    const [lidOpen, setLidOpen] = useState(false);
+
+
     // sample data, it will eventually come from API
     // const savedRecipes = [
     //     { id: 1, name: 'Salad', cookTime: '20 mins', category: 'Vegetarian' },
@@ -62,10 +65,41 @@ export default function Dashboard({ username }) {
     }, [username]);
 
     return (
-        <div className="dashboard-container">
-            <div className="dashboard-header">
-                <h1>Welcome to BiteBuddy, {username}!</h1>
+        // <div className="dashboard-container">
+        <div className = "cooking-pot"  style={{ marginTop: activeTab === 'mealplan'? '200px' : '20px' }}>
+            <div 
+            className={`pot-lid ${lidOpen ? 'open' : ''}`}
+            onClick={() => setLidOpen(!lidOpen)} >
+
+
+                {/* steam only shows when lid is open */}
+                {lidOpen && (
+                    <>
+                        <div className="steam"></div>
+                        <div className="steam"></div>
+                        <div className="steam"></div>
+                    </>
+                )}
             </div>
+
+
+                    <div className="pot-lid-handle" onClick={() => setLidOpen(!lidOpen)}></div>
+
+
+            <div className="dashboard-container pot-body" > 
+            <div className="dashboard-header">
+                <div class="cursor typewriter-animation">
+                <h1 >Welcome to BiteBuddy, {username}!</h1>
+                </div>  
+            
+            </div>
+
+            {!lidOpen &&
+
+            <h1 className="get-cooking">Let's get cooking! Open the pot lid to get started.</h1>}
+
+            {lidOpen && (
+            <>
 
             <div className="dashboard-tabs">
 
@@ -136,7 +170,9 @@ export default function Dashboard({ username }) {
                     </div>
                 )}
             </div>
-
+            </>
+            )}
+            </div>
         </div>
     );
 }

@@ -19,6 +19,7 @@ export default function Map() {
   const mapContainerRef = useRef(null);
   const [error, setError] = useState('');
   const geoapifyKey = process.env.REACT_APP_GEOAPIFY_API_KEY;
+  console.log(geoapifyKey)
 
     // Fetch and show map when ZIP changes
     const handleSubmit = async (e) => {
