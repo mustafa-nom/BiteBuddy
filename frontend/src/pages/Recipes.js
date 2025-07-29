@@ -9,6 +9,7 @@ export default function Recipe(){
     const [textInput, setTextInput] = useState('');
     const [recipes, setRecipes] = useState([]);
     const [showRecipes, setShowRecipes] = useState(false);
+    const [loading, setLoading] = useState(false);
 
 
     // TODO sample data for the recipe card
@@ -31,7 +32,9 @@ export default function Recipe(){
             alert('Please enter your mood or type of dish you want to eat.');
             return
         }
-        setShowRecipes(!showRecipes)
+        setLoading(true); 
+        setShowRecipes(false)
+
         try {
             const res = await fetch(`http://localhost:5000/recipes/suggest?mood=${encodeURIComponent(textInput)}`);
             const data = await res.json();
@@ -47,6 +50,10 @@ export default function Recipe(){
         } catch (e) {
             console.log('failed to fetch recipes', e)
             alert('Failed getting recipes. Try again.')
+        }
+        finally {
+            setLoading(false);
+            setShowRecipes(true);
         }
     };
 
@@ -79,60 +86,88 @@ export default function Recipe(){
     //     }
     // }
 
-    return(
-        // Everything will be inside this container
-        <div className = "recipe-box">
-            
-            {/* This will hold the title such as RECIPE*/}
-            <div className = "recipe-header">
-                <h1 id="page-header">Recipes</h1>
-                <p id="recipe-instruct">🍎 Generate a recipe based on your mood 🍎</p>
+    return (
+  <div className="w-full max-w-[1500px] p-8 rounded-2xl bg-[#dde3e5c2] text-center shadow-lg my-[50px] mx-auto">
+    <div>
+      <h1 className="text-4xl font-bold mb-2">Recipes</h1>
+      <p className="text-green-700 text-xl">Generate a recipe based on your mood</p>
+    </div>
+
+    <div className="mt-6">
+      <form onSubmit={handleSubmit} className="flex items-center justify-center gap-2 flex-wrap">
+        <input
+          type="text"
+          placeholder="🥞 What's your mood today? 🍕"
+          value={textInput}
+          onChange={(e) => setTextInput(e.target.value)}
+          className="border border-gray-400 rounded-md px-4 py-2 w-80 focus:outline-none focus:ring-2 focus:ring-green-400 text-center"
+        />
+        <Button
+        type="submit"
+        className="text-2xl px-4 py-2 bg-green-700 text-white rounded-lg hover:bg-green-900 transition flex items-center justify-center min-w-[50px]"
+        >
+        {loading ? (
+            <svg
+            className="animate-spin h-5 w-5 text-white"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            >
+            <circle
+                className="opacity-25"
+                cx="12"
+                cy="12"
+                r="10"
+                stroke="currentColor"
+                strokeWidth="4"
+            ></circle>
+            <path
+                className="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+            ></path>
+            </svg>
+        ) : (
+            '🥄'
+        )}
+        </Button>
+
+      </form>
+    </div>
+
+    <div className="w-1/2 mx-auto mt-8 text-center">
+      {recipes.length === 0 && !showRecipes && (
+        <p className="text-gray-600">No recipes generated yet. Put in your mood to get some recipes!</p>
+      )}
+
+      {showRecipes && recipes.length > 0 && (
+        <ul>
+          {recipes.map((recipe) => (
+            <div key={recipe.id} className="border-4 border-black/50 p-5 rounded-xl m-5">
+              <img
+                src={recipe.image}
+                alt={recipe.title}
+                className="w-[300px] h-[200px] object-cover rounded-xl border-4 border-green-900 mx-auto mb-4"
+              />
+              <h3 className="text-2xl font-semibold">{recipe.title}</h3>
+              <h4 className="opacity-70">Food Type: {recipe.type}</h4>
+              <h4 className="opacity-70">Time: ~{recipe.cookTime}</h4>
+              <h4 className="opacity-70 mb-2">Ingredients: {recipe.neededIngredients}</h4>
+              <p className="mb-4">{parse(recipe.instructions)}</p>
+              <div>
+                <button
+                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition hover:-translate-y-1"
+                  onClick={SaveRecipe}
+                >
+                  Save Recipe
+                </button>
+              </div>
             </div>
+          ))}
+        </ul>
+      )}
+    </div>
+  </div>
+);
 
-            {/* This will hold the user input button and the recipes that are output */}
-            <div>
-
-                {/* The input box for the user */}
-                <div className = "input-box">
-                    <form onSubmit={handleSubmit}>
-                        <input
-                        type="text"
-                        placeholder="What are you in the mood for today? 🍕🥞🍖🍣"
-                        value={textInput}
-                        onChange={(e) => setTextInput(e.target.value)}
-                        />
-                        <button type = "submit">🥄</button>
-                    </form>
-                    
-                </div>
-            </div>
-            <div className="recipe-container">
-                {/* Show this message when recipes are empty and the user hasn't generated anything yet */}
-                {recipes.length === 0 && !showRecipes && (
-                    <p id="empty-text">No recipes, put in your mood to get some recipes!</p>
-                )}
-
-                {/* Show this section only after the user submits (showRecipes becomes true) */}
-                {showRecipes && recipes.length > 0 && (
-                    <ul>
-                        {recipes.map((recipe) => (
-                        <div key={recipe.id} className="recipe-card">
-                            <img src={recipe.image} alt={recipe.title} />
-                            <h3 className = "text-2xl font-semibold">{recipe.title}</h3>
-                            <h4>Food Type: {recipe.type}</h4>
-                            <h4>Time: ~{recipe.cookTime}</h4>
-                            <h4>Ingredients: {recipe.neededIngredients}</h4>
-                            <p>{parse(recipe.instructions)}</p>
-
-                                <div className="button-list">
-                                    <button className="view-btn" onClick={SaveRecipe}>Save Recipe</button>
-                                    {/* <button className="view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
-                                </div>
-                        </div>
-                        ))}
-                    </ul>
-                )}
-            </div>
-        </div>
-    );
 }
