@@ -32,8 +32,8 @@ BiteBuddy is an AI-powered nutrition planner that reduces food waste by generati
 ## Setup Instructions
 1. Clone the repo
 ```bash
-git clone https://github.com/mustafa-nom/BiteBuddy.git
-cd reptracker/backend
+git clone https://github.com/your_username/BiteBuddy.git
+cd bitebuddy/backend
 ```
 2. Create local environment
 ```
@@ -46,10 +46,20 @@ venv\Scripts\activate           # Windows
 ```
 pip install -r requirements.txt
 ```
-4. To run the app, you must put the following in a `.env` file (Note: verify it's ignored in the .gitignore file):
+4. To run the app, you must put the following in a `.env` file & update their values (Note: verify it's ignored in the .gitignore file):
 ```
 SPOONACULAR_API_KEY=api_key_here 
 GEMINI_API_KEY=api_key_here
+GEOAPIFY_API_KEY=api_key_here
+GOOGLE_APPLICATION_CREDENTIALS=
+REACT_APP_API_KEY= ""
+REACT_APP_AUTH_DOMAIN= ""
+REACT_APP_PROJECT_ID= ""
+REACT_APP_STORAGE_BUCKET=""
+REACT_APP_MESSAGING_SENDER_ID= ""
+REACT_APP_APP_ID=""
+REACT_APP_MEASUREMENT_ID="" 
+
 ```
 5. Run the app
 ```
