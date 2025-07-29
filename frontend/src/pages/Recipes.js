@@ -85,8 +85,8 @@ export default function Recipe(){
             
             {/* This will hold the title such as RECIPE*/}
             <div className = "recipe-header">
-                <h1 className = "text-4xl font-bold">Recipes</h1>
-                <p>Generate a recipe based on your mood</p>
+                <h1 id="page-header">Recipes</h1>
+                <p id="recipe-instruct">🍎 Generate a recipe based on your mood 🍎</p>
             </div>
 
             {/* This will hold the user input button and the recipes that are output */}
@@ -109,7 +109,7 @@ export default function Recipe(){
                 <div className="recipe-container">
                     {/* Show this message when recipes are empty and the user hasn't generated anything yet */}
                     {recipes.length === 0 && !showRecipes && (
-                        <p>No recipes generated yet. Put in your mood to get some recipes!</p>
+                        <p id="empty-text">No recipes generated yet. Put in your mood to get some recipes!</p>
                     )}
 
                     {/* Show this section only after the user submits (showRecipes becomes true) */}
