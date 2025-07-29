@@ -7,6 +7,7 @@ load_dotenv()
 SPOON_API_KEY = os.getenv('SPOONACULAR_API_KEY')
 
 def get_recipes_from_keywords(food_keywords, num_recipe_per_keyword):
+    print(SPOON_API_KEY)
     all_recipes = []
     for keyword in food_keywords:
         search_url = 'https://api.spoonacular.com/recipes/complexSearch'
@@ -16,8 +17,9 @@ def get_recipes_from_keywords(food_keywords, num_recipe_per_keyword):
             'apiKey': SPOON_API_KEY
         }
         response = requests.get(search_url, params=params)
+        print(response.status_code)
         data = response.json()
-
+        print(data)
         recipes = data.get('results', [])
         print(f"Keyword provided: {keyword} \n Recipe got: {recipes}")
         for recipe in recipes:

@@ -1,94 +1,106 @@
-// src/components/Map.js
 import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+
+// Fix Leaflet marker icons
 import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
 import markerIcon from 'leaflet/dist/images/marker-icon.png';
 import markerShadow from 'leaflet/dist/images/marker-shadow.png';
 
-// ONLY SEARCHES FOR STORES AROUND MY ZIPCODE, GOING TO IMPLEMENT USER INPUTTING ONE
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: markerIcon2x,
+  iconUrl: markerIcon,
+  shadowUrl: markerShadow,
+});
 
-export default function Map({ zip = '75094'}) {
+export default function Map() {
   const mapRef = useRef(null);
   const mapContainerRef = useRef(null);
-  const [error, setError] = useState(`Loading grocery stores near ZIP code: ${zip}...`);
+  const [error, setError] = useState('');
   const geoapifyKey = process.env.REACT_APP_GEOAPIFY_API_KEY;
-  console.log(geoapifyKey)
-  useEffect(() => {
+
+    // Fetch and show map when ZIP changes
+    const handleSubmit = async (e) => {
+    e.preventDefault();
+    const inputZip = e.target.elements.zipcode.value;
+
     if (!geoapifyKey) {
-      setError("Geoapify API key is missing.");
-      return;
+        setError("Geoapify API key is missing.");
+        return;
     }
 
-    // Initialize the map
-    mapRef.current = L.map(mapContainerRef.current).setView([39.8283, -98.5795], 4);
-    // Fix default icon path so it loads correctly in React
-    delete L.Icon.Default.prototype._getIconUrl;
+    try {
+        const response = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${inputZip}&apiKey=${geoapifyKey}`);
+        const data = await response.json();
 
-    L.Icon.Default.mergeOptions({
-        iconRetinaUrl: markerIcon2x,
-        iconUrl: markerIcon,
-        shadowUrl: markerShadow,
-    });
-    // Add tile layer
-    L.tileLayer(`https://maps.geoapify.com/v1/tile/osm-bright/{z}/{x}/{y}.png?apiKey=${geoapifyKey}`, {
-      attribution: '© OpenMapTiles © OpenStreetMap contributors',
-      maxZoom: 18,
-    }).addTo(mapRef.current);
-
-    // Fetch store data
-    fetch(`http://localhost:5000/map/find-stores?zip=${zip}`)
-      .then(response => {
-        if (!response.ok) throw new Error(`Server returned ${response.status}`);
-        return response.json();
-      })
-      .then(data => {
-        if (!data.features || data.features.length === 0) {
-          setError('No grocery stores found near this ZIP code.');
-          return;
+        if (data.features.length === 0) {
+        setError("Invalid ZIP code or no location found.");
+        return;
         }
 
-        setError(''); // Clear loading message
+        const { lat, lon } = data.features[0].properties;
 
-        data.features.forEach(store => {
-          const [lng, lat] = store.geometry.coordinates;
-          const props = store.properties;
-          const name = props.name || 'Unnamed Store';
-          const address = props.formatted || 'No address available';
+        // Initialize or update map
+        if (!mapRef.current) {
+        mapRef.current = L.map(mapContainerRef.current).setView([lat, lon], 13);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap contributors'
+        }).addTo(mapRef.current);
+        } else {
+        mapRef.current.setView([lat, lon], 13);
 
-          L.marker([lat, lng])
+        // Clear old markers
+        mapRef.current.eachLayer(layer => {
+            if (layer instanceof L.Marker) mapRef.current.removeLayer(layer);
+        });
+        }
+
+        // Search for grocery stores
+        const storeResp = await fetch(`https://api.geoapify.com/v2/places?categories=commercial.supermarket&filter=circle:${lon},${lat},5000&limit=10&apiKey=${geoapifyKey}`);
+        const storeData = await storeResp.json();
+
+        if (storeData.features.length === 0) {
+        setError("No grocery stores found nearby.");
+        return;
+        }
+
+        setError(""); // Clear error
+
+        storeData.features.forEach(store => {
+        const coords = store.geometry.coordinates;
+        const name = store.properties.name || "Unnamed Store";
+        const address = store.properties.formatted;
+
+        L.marker([coords[1], coords[0]])
             .addTo(mapRef.current)
             .bindPopup(`<b>${name}</b><br>${address}`);
         });
 
-        // Zoom into the first store
-        const [lng, lat] = data.features[0].geometry.coordinates;
-        mapRef.current.setView([lat, lng], 13);
-      })
-      .catch(err => {
-        setError(`Error loading grocery stores: ${err.message}`);
+    } catch (err) {
+        setError("An error occurred while loading the map.");
         console.error(err);
-      });
-
-    // Clean up map on component unmount
-    return () => {
-      if (mapRef.current) {
-        mapRef.current.remove();
-      }
+    }
     };
-  }, [zip, geoapifyKey]);
 
-  return (
+
+    return (
     <div style={{
-    display: 'flex',
-    flexDirection: 'column',
-    height: '100vh',
-    width: '100vh',
-    margin: '0 auto'
-  }}>
-      <h1 style={{ textAlign: 'center', margin: '10px 0' }}>Nearby Grocery Stores</h1>
-      {error && <div style={{ color: 'red', textAlign: 'center', margin: '10px' }}>{error}</div>}
-      <div ref={mapContainerRef} style={{ flexGrow: 1 }} id="map"></div>
+        display: 'flex',
+        flexDirection: 'column',
+        height: '100vh',
+        width: '100vh',
+        margin: '0 auto'
+    }}>
+       <form onSubmit={handleSubmit} style={{ padding: '10px' }}>
+        <label htmlFor="zipcode">Enter ZIP code: </label>
+        <input id="zipcode" name="zipcode" type="text" required pattern="\d{5}" />
+        <button type="submit">Search</button>
+      </form>
+
+      {error && <div style={{ padding: '10px', color: 'red' }}>{error}</div>}
+
+      <div ref={mapContainerRef} style={{ flex: 1 }} />
     </div>
-  );
-}
+    );
+    }
