@@ -82,7 +82,7 @@ export default function Fridge({ username}) {
     return (
         <div className="fridge-container">
             <div className="fridge-header">
-                <h1>Ingredients</h1>
+                <h1 id="page-header">Ingredients</h1>
                 <p>Track what ingredients you have available</p>
             </div>
 

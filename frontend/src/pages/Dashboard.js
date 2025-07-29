@@ -104,7 +104,7 @@ export default function Dashboard({ username }) {
                 ) : (
                     //link user to recipe for each meal in meal
                     <div className="meal-plan">
-                        <h2>This Week's Meal Plan</h2>
+                        <h2 id="meal-plan-header" >This Week's Meal Plan</h2>
                         {mealPlan.map(day => (
                             // use day as index for map
                             <div key={day.day} className="day-plan">

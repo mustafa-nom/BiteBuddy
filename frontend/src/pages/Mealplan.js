@@ -209,26 +209,107 @@ export default function Mealplan(){
         }
     };
 
+    const [showSavePlan, setShowSavePlan] = useState(false);
+    const [textInput, setTextInput] = useState('');
+    const [recipes, setRecipes] = useState([]);
+
+    // This will generate meals using the api in the format above
+    const GenerateMeals = () => {
+        // This is mock funcationality to see if it toggles all the recipes
+        setShowSavePlan(!showSavePlan)
+    };
+
+    // This will save the plan to view on the dashboard
+    const SavePlan = () => {
+
+    };
+
+    // This will save the recipe to the database
+    const SaveRecipe = () => {
+
+    };
+
+    // This will shuffle the recipe for a new one
+    const ShuffleRecipe = () => {
+
+    };
+
+    // Scroll to the day you want
+    const scrollTo = (day) => {
+        const section = document.getElementById(day);
+        if (section) {
+            section.scrollIntoView({behavior: 'smooth'});
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        if (!textInput) {
+            alert('Please enter your goals for the week.');
+            return
+        }
+        setShowSavePlan(!showSavePlan)
+        
+    };
+
     return(
         // Everything will be inside this container
         <div className = "mealplan-container">
             
             {/* Title of the page */}
             <div className = "input-box">
-                <h1>Meal Plan</h1>
+                <h1 id="page-header">Meal Plan</h1>
+                <p id="recipe-instruct"> 🍎 Generate a 7-day meal plan based on your mood 🍎 </p>
             </div>
 
-            {/* Button to generate meals*/}
-            <div className = "center-btn">
-                <button className = "view-btn">Generate Meals 🍽</button>
+
+            {/* The input box for the user */}
+            <div className = "input-box">
+                <form onSubmit={handleSubmit}>
+                    <input
+                    type="text"
+                    placeholder="What are your diet goals for the week? 🍕🥞🍖🍣"
+                    value={textInput}
+                    onChange={(e) => setTextInput(e.target.value)}
+                    />
+                    <button type = "submit">🥄</button>
+                </form>
             </div>
+
+            {/* Button to generate meals DONT NEED TO GENERATE MEALS ANYMORE SINCE WE ARE USING A TEXTBOX*/}
+            {/* <div className = "center-btn" id = "top">
+                <button className = "view-btn" onClick={GenerateMeals}>Generate Meals 🍽</button>
+            </div> */}
+
+            {showSavePlan && (
+                <div className = "center-btn">
+                    <button className = "view-btn" onClick={SavePlan}>Save Plan</button>
+
+                    <h2>Go To</h2>
+                    <div className="button-list">
+                        <button className ="view-btn" onClick={() => scrollTo("Sunday")}>Sunday</button>
+                        <button className ="view-btn" onClick={() => scrollTo("Monday")}>Monday</button>
+                        <button className ="view-btn" onClick={() => scrollTo("Tuesday")}>Tuesday</button>
+                        <button className ="view-btn" onClick={() => scrollTo("Wednesday")}>Wednesday</button>
+                        <button className ="view-btn" onClick={() => scrollTo("Thursday")}>Thursday</button>
+                        <button className ="view-btn" onClick={() => scrollTo("Friday")}>Friday</button>
+                        <button className ="view-btn" onClick={() => scrollTo("Saturday")}>Saturday</button>
+
+                    </div>
+                </div>
+
+            )}
+            
             
 
             {/* Contains ALL THE GENERATED MEALS */}
+
+            {showSavePlan ? 
             <div>
                 {Object.entries(generatedRecipes).map(([day, meals]) => (
                     <>
-                    <div className = "day-header">
+                    <div className = "day-header" id = {day}>
                             <h2>{day}</h2>
                     </div>
                     <div className = "day-container" key={day}>
@@ -245,16 +326,22 @@ export default function Mealplan(){
                                     <p>{recipe.instructions}</p>
                                     <div className = "button-list">
                                         {/* TODO add a basic functionality to the buttons */}
-                                        <button className = "view-btn">Save Recipe</button>
-                                        <button className = "view-btn">Shuffle Recipe</button>
+                                        <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
+                                        {/* <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
                                     </div>
                                 </div>
                             </div>
                         ))}
                     </div>
+                    <div className = "center-btn">
+                        <button className="view-btn" onClick={() => scrollTo("top")}>Go To Top</button>
+                    </div>
                     </>
                 ))}
             </div>
+            :
+            <p id="empty-text">Generate a mealplan!</p>
+            }
         </div>
     )
 };
