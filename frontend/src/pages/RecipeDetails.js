@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getRecipes, getRecipeById } from '../database';
+import { getRecipes, getRecipeById, getUserData } from '../database';
 
 // mock recipe data, what is important is the id of the recipe which is used as a key to find specifc recipes. recipes should be stored like this in database
 // const mockRecipes = [
@@ -72,6 +72,8 @@ export default function RecipeDetails() {
     // recipeID is from URL parameters, like /recipe/1
     const [recipe, setRecipe] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [userFridgeIngredients, setUserFridgeIngredients] = useState([]);
+    const [missingIngredients, setMissingIngredients] = useState([]);
     const { recipeId } = useParams();
     const navigate = useNavigate();
     const username = localStorage.getItem('username');
@@ -91,6 +93,20 @@ export default function RecipeDetails() {
     return raw.split('\n').map(line => line.trim()).filter(line => line.length > 0);
 }
 
+    function getMissingIngredients(recipeIngredients, userIngredients) {
+        const missing = [];
+        const neededIngredients = recipeIngredients.split(',').map(ing => ing.trim().toLowerCase());
+        const userFridge = userIngredients.map(ing => ing.trim().toLowerCase());
+
+        neededIngredients.forEach(ingredient => {
+            if (!userFridge.includes(ingredient)) {
+                missing.push(ingredient);
+            }
+        }
+        )
+        return missing;
+    }
+
 
 
     // event handler for back button click to go to dashboard
@@ -103,7 +119,10 @@ export default function RecipeDetails() {
             if (!username) return;
 
             const matchedRecipe = await getRecipeById(username, recipeId)
-
+            const userData = await getUserData(username);
+            const fridgeIngredients = userData?.fridge_ingredients || [];
+            setUserFridgeIngredients(fridgeIngredients);
+            setMissingIngredients(getMissingIngredients(matchedRecipe.neededIngredients, fridgeIngredients));
             setRecipe(matchedRecipe);
             setLoading(false);
         };
@@ -156,6 +175,21 @@ export default function RecipeDetails() {
                             {ingredient.trim()}
                             </li>
                         ))}
+                    </ul>
+                </div>
+
+                <div className="recipe-section">
+                    <h2>Missing Ingredients</h2>
+                    <ul className="ingredients-list">
+                        {missingIngredients.length > 0 ? (
+                            missingIngredients.map((ingredient, index) => (
+                                <li key={index} style=   {{ color: "red" }}>
+                                    {ingredient}
+                                </li>
+                            ))
+                        ) : (
+                            <li style={{color:"green"}}>You have all the ingredients!</li>
+                        )}
                     </ul>
                 </div>
 
