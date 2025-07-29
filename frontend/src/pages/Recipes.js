@@ -85,7 +85,7 @@ export default function Recipe(){
             
             {/* This will hold the title such as RECIPE*/}
             <div className = "recipe-header">
-                <h1>Recipes</h1>
+                <h1 className = "text-4xl font-bold">Recipes</h1>
                 <p>Generate a recipe based on your mood</p>
             </div>
 
@@ -105,36 +105,33 @@ export default function Recipe(){
                     </form>
                     
                 </div>
+            </div>
+                <div className="recipe-container">
+                    {/* Show this message when recipes are empty and the user hasn't generated anything yet */}
+                    {recipes.length === 0 && !showRecipes && (
+                        <p>No recipes generated yet. Put in your mood to get some recipes!</p>
+                    )}
 
-                {showRecipes ? (
-                
-                // This is where all the generated recipes will go
-                <div className = "recipe-container">
+                    {/* Show this section only after the user submits (showRecipes becomes true) */}
+                    {showRecipes && recipes.length > 0 && (
+                        <ul>
+                        {recipes.map((recipe) => (
+                            <div key={recipe.id} className="recipe-card">
+                            <img src={recipe.image} alt={recipe.title} />
+                            <h3 className = "text-2xl font-semibold">{recipe.title}</h3>
+                            <h4>Food Type: {recipe.type}</h4>
+                            <h4>Time: ~{recipe.cookTime}</h4>
+                            <h4>Ingredients: {recipe.neededIngredients}</h4>
+                            <p>{parse(recipe.instructions)}</p>
 
-                    {/* Placeholder card for what a recipe will look like */}
-                    
-                        {recipes.map (recipe => (
-                            <div key = {recipe.id} className = "recipe-card">
-                                <img src = {recipe.image}></img>
-                                <h3>{recipe.title}</h3>
-
-                                {/* This is not used because api doesnt give it
-                                <h4>{recipe.type}</h4>
-                                <h4>{recipe.cookTime}</h4>
-                                <h4>{recipe.neededIngredients}</h4>
-                                <p>{recipe.instructions}</p> */}
-                                
-                                <div className = "button-list">
-                                    {/* TODO add a basic functionality to the buttons */}
-                                    <button className = "view-btn" onClick={SaveRecipe}>Save Recipe</button>
-                                    {/* <button className = "view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
-                                </div>
+                            <div className="button-list">
+                                <button className="view-btn" onClick={SaveRecipe}>Save Recipe</button>
+                                {/* <button className="view-btn" onClick={ShuffleRecipe}>Shuffle Recipe</button> */}
+                            </div>
                             </div>
                         ))}
-                    </div>
-                ) : (
-                <p>Create recipe!</p>
-                )}
+                        </ul>
+                    )}
             </div>
         </div>
     );
