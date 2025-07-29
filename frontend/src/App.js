@@ -11,6 +11,7 @@ import Signup from './pages/Signup';
 import RecipeDetails from './pages/RecipeDetails';
 import Mealplan from './pages/Mealplan';
 import Navbar from './components/Navbar';
+import Map from './pages/Map';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -85,6 +86,13 @@ function App() {
             path="/mealplan"
             element={
               isLoggedIn ? <Mealplan /> : <Navigate to="/" />
+            }
+          />
+
+          <Route
+            path="/map"
+            element={
+              isLoggedIn ? <Map /> : <Navigate to="/" />
             }
           />
         </Routes>

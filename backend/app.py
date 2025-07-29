@@ -21,7 +21,7 @@ def home():
         "message": "BiteBuddy works!",
         "endpoints": {
             "recipes" : "recipes/suggest?mood=Im lazy",
-            "map" : "/map/recipe",
+            "map" : "map/recipe",
             "meal_plan": "meal_plan/suggest?goal=lean bulk",
             "fridge": "fridge/search?ingredient=white eggs"
         }

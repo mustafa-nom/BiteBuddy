@@ -80,10 +80,17 @@ export default function RecipeDetails() {
     //const recipe = mockRecipes.find(r => r.id === parseInt(recipeId));
 
     // function to parse instructions into an array of strings to use the map function
-    function parseInstructions(html) {
-        const doc = new DOMParser().parseFromString(html, 'text/html');
-        return Array.from(doc.querySelectorAll('li')).map(li => li.textContent);
-    }
+   function parseInstructions(raw) {
+    // If it's HTML with <li> tags
+    const doc = new DOMParser().parseFromString(raw, 'text/html');
+    const listItems = Array.from(doc.querySelectorAll('li')).map(li => li.textContent.trim());
+
+    if (listItems.length > 0) return listItems;
+
+    // Otherwise, assume it's plain text with \n breaks
+    return raw.split('\n').map(line => line.trim()).filter(line => line.length > 0);
+}
+
 
 
     // event handler for back button click to go to dashboard

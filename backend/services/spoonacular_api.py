@@ -53,6 +53,7 @@ def get_weekly_recipes_from_keywords(food_keywords, num_recipe_per_keyword):
             'number': num_recipe_per_keyword,
             'apiKey': SPOON_API_KEY
         }
+        
         response = requests.get(search_url, params=params)
         data = response.json()
 
@@ -60,6 +61,7 @@ def get_weekly_recipes_from_keywords(food_keywords, num_recipe_per_keyword):
         print(f"Keyword provided: {keyword} \n Recipe got: {recipes}")
 
         if not recipes:
+            print(f"Spoonacular failed for '{keyword}'")
             all_recipes.append({
                 'id': 0,
                 'title': "NOT FOUND",

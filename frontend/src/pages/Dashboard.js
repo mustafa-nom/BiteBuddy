@@ -98,7 +98,7 @@ export default function Dashboard({ username }) {
                                     {savedRecipes.map(recipe => (
                                         // use recipe id as index for map
                                         <li key={recipe.id} className="recipe-item">
-                                            <h3>{recipe.title} </h3>
+                                            <h3> {recipe.title} </h3>
                                             <p> Time: {recipe.cookTime} </p>
                                             <p> Category: {recipe.category} </p>
                                             <button className="view-btn" onClick={() => handleRecipeClick(recipe.id)}>View Recipe</button>
