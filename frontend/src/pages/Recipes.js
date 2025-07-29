@@ -85,8 +85,8 @@ export default function Recipe(){
             
             {/* This will hold the title such as RECIPE*/}
             <div className = "recipe-header">
-                <h1>Recipes</h1>
-                <p>Generate a recipe based on your mood</p>
+                <h1 className="text-4xl font-bold">Recipes</h1>
+                <p className="text-2xl">Generate a recipe based on your mood</p>
             </div>
 
             {/* This will hold the user input button and the recipes that are output */}
@@ -117,12 +117,10 @@ export default function Recipe(){
                             <div key = {recipe.id} className = "recipe-card">
                                 <img src = {recipe.image}></img>
                                 <h3>{recipe.title}</h3>
-
-                                {/* This is not used because api doesnt give it
                                 <h4>{recipe.type}</h4>
-                                <h4>{recipe.cookTime}</h4>
-                                <h4>{recipe.neededIngredients}</h4>
-                                <p>{recipe.instructions}</p> */}
+                                <h4>Time: ~{recipe.cookTime}</h4>
+                                <h4>Ingredients: {recipe.neededIngredients}</h4>
+                                <p>{parse(recipe.instructions)}</p>
                                 
                                 <div className = "button-list">
                                     {/* TODO add a basic functionality to the buttons */}
@@ -133,7 +131,7 @@ export default function Recipe(){
                         ))}
                     </div>
                 ) : (
-                <p>Create recipe!</p>
+                <p>Input your mood to get the recipe below!</p>
                 )}
             </div>
         </div>

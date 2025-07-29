@@ -55,7 +55,7 @@ def get_ingredient(ingredient_name):
 
     ingredient = results[0]
     return {
-        'id': ingredient[id],
-        'name': ingredient[name],
-        'image': ingredient.get(image)
+        'id': ingredient.get('id'),
+        'name': ingredient.get('name'),
+        'image': ingredient.get('image')
     }
