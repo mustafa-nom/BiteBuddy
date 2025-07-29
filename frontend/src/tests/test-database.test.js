@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import {addUserLogin, addPassword, addIngredient, addDietaryRestriction, addRecipe, removeDietaryRestriction, removeIngredient, removeRecipe, getUserData, getRecipes} from '../database.js';
+import {addUserLogin, addPassword, addIngredient, addDietaryRestriction, addRecipe, removeDietaryRestriction, removeIngredient, removeRecipe, getUserData, getRecipes, addMealPlan, getMealPlans, removeMealPlan} from '../database.js';
 describe("Database helper tests", () => {
   const username = 'testuser';
   beforeAll(async () => {
@@ -58,6 +58,45 @@ describe("Database helper tests", () => {
     const recipes = await getRecipes(username);
     expect(recipes.find(r => r.title === recipe.title)).toBeUndefined();
   });
+  test("add meal plan and then retrieve it", async () => {
+    const mealPlan = {
+      "Monday": {
+        breakfast: 'Oatmeal',
+        lunch: 'Salad',
+        dinner: 'Pasta'
+      },
+    };
+    await addMealPlan(username, mealPlan);
+    const mealPlans = await getMealPlans(username);
+    expect(mealPlans.Monday).toEqual({
+      breakfast: 'Oatmeal',
+      lunch: 'Salad',
+      dinner: 'Pasta' });
+    });
+  test("get user data", async () => {
+    const user = await getUserData(username);
+    
+    expect(user.fridge_ingredients).toBeDefined();
+    expect(user.dietary_restrictions).toBeDefined();
+    expect(user.saved_recipes).toBeDefined(); 
+  
+  });
+
+  test ("remove meal plan and then check if it is removed", async () => {
+    const mealPlan = {
+      "Monday": {
+        breakfast: 'Oatmeal',
+        lunch: 'Salad',
+        dinner: 'Pasta'
+      },
+    };
+    await removeMealPlan(username, "Monday");
+    const mealPlans = await getMealPlans(username);
+    expect(mealPlans.Monday).toBeUndefined();
+  }
+  );
+
 });
+
 
 

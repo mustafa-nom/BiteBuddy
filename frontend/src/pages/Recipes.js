@@ -106,11 +106,19 @@ export default function Recipe(){
                     
                 </div>
             </div>
+<<<<<<< HEAD
             <div className="recipe-container">
                 {/* Show this message when recipes are empty and the user hasn't generated anything yet */}
                 {recipes.length === 0 && !showRecipes && (
                     <p id="empty-text">No recipes, put in your mood to get some recipes!</p>
                 )}
+=======
+                <div className="recipe-container">
+                    {/* Show this message when recipes are empty and the user hasn't generated anything yet */}
+                    {recipes.length === 0 && !showRecipes && (
+                        <p id="empty-text">No recipes generated yet. Put in your mood to get some recipes!</p>
+                    )}
+>>>>>>> eae031cf02407f170d721c3807d1d1b7e1df7e0e
 
                 {/* Show this section only after the user submits (showRecipes becomes true) */}
                 {showRecipes && recipes.length > 0 && (
