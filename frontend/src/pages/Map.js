@@ -24,66 +24,66 @@ export default function Map() {
 
     // Fetch and show map when ZIP changes
     const handleSubmit = async (e) => {
-    e.preventDefault();
-    const inputZip = e.target.elements.zipcode.value;
+      e.preventDefault();
+      const inputZip = e.target.elements.zipcode.value;
 
-    if (!geoapifyKey) {
-        setError("Geoapify API key is missing.");
-        return;
-    }
-    setLoading(true);
+      if (!geoapifyKey) {
+          setError("Geoapify API key is missing.");
+          return;
+      }
+      setLoading(true);
 
-    try {
-        const response = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${inputZip}&apiKey=${geoapifyKey}`);
-        const data = await response.json();
+      try {
+          const response = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${inputZip}&apiKey=${geoapifyKey}`);
+          const data = await response.json();
 
-        if (data.features.length === 0) {
-        setError("Invalid ZIP code or no location found.");
-        return;
-        }
+          if (data.features.length === 0) {
+          setError("Invalid ZIP code or no location found.");
+          return;
+          }
 
-        const { lat, lon } = data.features[0].properties;
+          const { lat, lon } = data.features[0].properties;
 
-        // Initialize or update map
-        if (!mapRef.current) {
-        mapRef.current = L.map(mapContainerRef.current).setView([lat, lon], 13);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(mapRef.current);
-        } else {
-        mapRef.current.setView([lat, lon], 13);
+          // Initialize or update map
+          if (!mapRef.current) {
+          mapRef.current = L.map(mapContainerRef.current).setView([lat, lon], 13);
+          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+              attribution: '© OpenStreetMap contributors'
+          }).addTo(mapRef.current);
+          } else {
+          mapRef.current.setView([lat, lon], 13);
 
-        // Clear old markers
-        mapRef.current.eachLayer(layer => {
-            if (layer instanceof L.Marker) mapRef.current.removeLayer(layer);
-        });
-        }
+          // Clear old markers
+          mapRef.current.eachLayer(layer => {
+              if (layer instanceof L.Marker) mapRef.current.removeLayer(layer);
+          });
+          }
 
-        // Search for grocery stores
-        const storeResp = await fetch(`https://api.geoapify.com/v2/places?categories=commercial.supermarket&filter=circle:${lon},${lat},5000&limit=10&apiKey=${geoapifyKey}`);
-        const storeData = await storeResp.json();
+          // Search for grocery stores
+          const storeResp = await fetch(`https://api.geoapify.com/v2/places?categories=commercial.supermarket&filter=circle:${lon},${lat},5000&limit=10&apiKey=${geoapifyKey}`);
+          const storeData = await storeResp.json();
 
-        if (storeData.features.length === 0) {
-        setError("No grocery stores found nearby.");
-        return;
-        }
+          if (storeData.features.length === 0) {
+          setError("No grocery stores found nearby.");
+          return;
+          }
 
-        setError(""); // Clear error
+          setError(""); // Clear error
 
-        storeData.features.forEach(store => {
-        const coords = store.geometry.coordinates;
-        const name = store.properties.name || "Unnamed Store";
-        const address = store.properties.formatted;
+          storeData.features.forEach(store => {
+          const coords = store.geometry.coordinates;
+          const name = store.properties.name || "Unnamed Store";
+          const address = store.properties.formatted;
 
-        L.marker([coords[1], coords[0]])
-            .addTo(mapRef.current)
-            .bindPopup(`<b>${name}</b><br>${address}`);
-        });
+          L.marker([coords[1], coords[0]])
+              .addTo(mapRef.current)
+              .bindPopup(`<b>${name}</b><br>${address}`);
+          });
 
-    } catch (err) {
-        setError("An error occurred while loading the map.");
-        console.error(err);
-    }
+      } catch (err) {
+          setError("An error occurred while loading the map.");
+          console.error(err);
+      }
     };
 
 
