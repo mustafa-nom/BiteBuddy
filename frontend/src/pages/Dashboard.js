@@ -5,7 +5,6 @@ export default function Dashboard({ username }) {
     // state to check which tab is active. we start by looking at user's saved recipes.
     const [activeTab, setActiveTab] = useState('recipes');
     const navigate = useNavigate();
-
     const [lidOpen, setLidOpen] = useState(false);
 
 
