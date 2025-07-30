@@ -18,7 +18,9 @@ export default function Map() {
   const mapRef = useRef(null);
   const mapContainerRef = useRef(null);
   const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
   const geoapifyKey = process.env.REACT_APP_GEOAPIFY_API_KEY;
+  console.log(geoapifyKey)
 
     // Fetch and show map when ZIP changes
     const handleSubmit = async (e) => {
@@ -29,6 +31,7 @@ export default function Map() {
         setError("Geoapify API key is missing.");
         return;
     }
+    setLoading(true);
 
     try {
         const response = await fetch(`https://api.geoapify.com/v1/geocode/search?text=${inputZip}&apiKey=${geoapifyKey}`);
@@ -85,22 +88,47 @@ export default function Map() {
 
 
     return (
-    <div style={{
-        display: 'flex',
-        flexDirection: 'column',
-        height: '100vh',
-        width: '100vh',
-        margin: '0 auto'
-    }}>
-       <form onSubmit={handleSubmit} style={{ padding: '10px' }}>
-        <label htmlFor="zipcode">Enter ZIP code: </label>
-        <input id="zipcode" name="zipcode" type="text" required pattern="\d{5}" />
-        <button type="submit">Search</button>
-      </form>
-
-      {error && <div style={{ padding: '10px', color: 'red' }}>{error}</div>}
-
-      <div ref={mapContainerRef} style={{ flex: 1 }} />
+    <div className="map-container">
+    <div className="map-header">
+      <h1>Find Grocery Stores</h1>
+      <p>Enter your ZIP code to find nearby grocery stores</p>
     </div>
-    );
+
+    <form onSubmit={handleSubmit} className="map-search-form">
+      <input 
+        className="map-search-input"
+        id="zipcode" 
+        name="zipcode" 
+        type="text" 
+        placeholder="Enter your ZIP code (e.g., 10001)"
+        required 
+        pattern="\d{5}" 
+      />
+      <button 
+        className="map-search-btn" 
+        type="submit"
+        disabled={loading}
+      >
+        {loading ? (
+          <svg className="map-spinner" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"/>
+          </svg>
+        ) : (
+          '📌'
+        )}
+      </button>
+    </form>
+
+    {error && <div className="map-error">{error}</div>}
+
+    {!error && !mapRef.current && (
+      <div className="map-placeholder">
+        <p>Enter a ZIP code above to find grocery stores in your area!</p>
+      </div>
+    )}
+
+    <div ref={mapContainerRef} className="map-display" />
+  </div>
+);
     }

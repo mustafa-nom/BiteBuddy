@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getRecipes, getRecipeById } from '../database';
+import { getRecipes, getRecipeById, getUserData } from '../database';
 
 export default function RecipeDetails() {
     const [recipe, setRecipe] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [userFridgeIngredients, setUserFridgeIngredients] = useState([]);
+    const [missingIngredients, setMissingIngredients] = useState([]);
     const { recipeId } = useParams();
     const navigate = useNavigate();
     const username = localStorage.getItem('username');
@@ -21,6 +23,21 @@ export default function RecipeDetails() {
         // Otherwise, assume it's plain text with \n breaks
         return raw.split('\n').map(line => line.trim()).filter(line => line.length > 0);
     }
+
+    function getMissingIngredients(recipeIngredients, userIngredients) {
+        const missing = [];
+        const neededIngredients = parseIngredients(recipeIngredients);
+        const userFridge = userIngredients.map(ing => ing.trim().toLowerCase());
+
+        neededIngredients.forEach(ingredient => {
+            if (!userFridge.includes(ingredient)) {
+                missing.push(ingredient);
+            }
+        }
+        )
+        return missing;
+    }
+
 
     // function to parse ingredients - handles both string and array formats
     function parseIngredients(ingredients) {
@@ -50,7 +67,10 @@ export default function RecipeDetails() {
             if (!username) return;
 
             const matchedRecipe = await getRecipeById(username, recipeId)
-
+            const userData = await getUserData(username);
+            const fridgeIngredients = userData?.fridge_ingredients || [];
+            setUserFridgeIngredients(fridgeIngredients);
+            setMissingIngredients(getMissingIngredients(matchedRecipe.neededIngredients, fridgeIngredients));
             setRecipe(matchedRecipe);
             setLoading(false);
         };
@@ -93,7 +113,7 @@ export default function RecipeDetails() {
 
                 <div className="recipe-info">
                     <span> ⏱️ {recipe.cookTime} </span>
-                    <span> 🏷️ {recipe.category} </span>
+                    <span> 🏷️ {recipe.type} </span>
                 </div>
             </div>
 
@@ -106,6 +126,21 @@ export default function RecipeDetails() {
                                 {ingredient}
                             </li>
                         ))}
+                    </ul>
+                </div>
+
+                <div className="recipe-section">
+                    <h2>Missing Ingredients</h2>
+                    <ul className="ingredients-list">
+                        {missingIngredients.length > 0 ? (
+                            missingIngredients.map((ingredient, index) => (
+                                <li key={index} style=   {{ color: "red" }}>
+                                    {ingredient}
+                                </li>
+                            ))
+                        ) : (
+                            <li style={{color:"green"}}>You have all the ingredients!</li>
+                        )}
                     </ul>
                 </div>
 
