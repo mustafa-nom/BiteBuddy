@@ -65,7 +65,7 @@ export default function Dashboard({ username }) {
 
     return (
         // <div className="dashboard-container">
-        <div className = "cooking-pot"  style={{ marginTop: activeTab === 'mealplan'? '200px' : '20px' }}>
+        <div className = "cooking-pot"  style={{ marginTop: activeTab === 'mealplan'? '200px' : '200px' }}>
             <div 
             className={`pot-lid ${lidOpen ? 'open' : ''}`}
             onClick={() => setLidOpen(!lidOpen)} >

@@ -214,7 +214,67 @@ export default function Mealplan({ username }) {
         </div>
       )}
 
-      <div>
+        <div>
+        {showSavePlan &&
+            Object.keys(recipes).length > 0 &&
+            Object.entries(recipes).map(( [day, meals] ) => (
+            <React.Fragment key={day}>
+                <div className="day-header" id={day}>
+                <h2 className="text-3xl font-bold mb-4">{day}</h2>
+                </div>
+
+                <div className="day-container">
+                {Object.entries(meals).map(([mealType, recipe]) => (
+                    <div className="recipe-card" key={`${day}-${mealType}`}>
+                    <div className="recipe-image-container">
+                        <img 
+                        src={recipe.img} 
+                        alt={recipe.name} 
+                        className="recipe-image"
+                        />
+                    </div>
+                    <div className="recipe-content">
+                        <h3 className="text-xl font-bold mb-2">{mealType}</h3>
+                        <h3 className="recipe-title">{recipe.name}</h3>
+                        <div className="recipe-meta">
+                        <span className="recipe-type">{recipe.type}</span>
+                        <span className="recipe-time"> ~{recipe.cookTime}</span>
+                        </div>
+                        <div className="recipe-details">
+                        <h4>Ingredients</h4>
+                        <p className="recipe-ingredients">{recipe.neededIngredients}</p>
+                        {/* instructions too lengthy, so we exclude */}
+                        {/* <h4>Instructions</h4>
+                        <div className="recipe-instructions">
+                            {parse(recipe.instructions)}
+                        </div> */}
+                        </div>
+                        <div className="recipe-actions">
+                        <button 
+                            className="save-recipe-btn" 
+                            onClick={SaveRecipe}
+                        >
+                            Save Recipe
+                        </button>
+                        </div>
+                    </div>
+                    </div>
+                ))}
+                </div>
+
+                <div className="center-btn my-8">
+                <button 
+                    className="view-btn" 
+                    onClick={() => window.scrollTo( { top: 0, behavior: 'smooth' })}
+                >
+                    Go To Top
+                </button>
+                </div>
+            </React.Fragment>
+            ))}
+        </div>
+
+      {/* <div>
         {showSavePlan &&
           Object.keys(recipes).length > 0 &&
           Object.entries(recipes).map(([day, meals]) => (
@@ -256,7 +316,7 @@ export default function Mealplan({ username }) {
               </div>
             </React.Fragment>
           ))}
-      </div>
+      </div> */}
     </div>
   );
 }
