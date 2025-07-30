@@ -162,7 +162,7 @@ export default function RecipeDetails() {
 
                 <div className="recipe-info">
                     <span> ⏱️ {recipe.cookTime} </span>
-                    <span> 🏷️ {recipe.category} </span>
+                    <span> 🏷️ {recipe.type} </span>
                 </div>
             </div>
 

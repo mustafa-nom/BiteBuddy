@@ -134,7 +134,7 @@ export default function Dashboard({ username }) {
                                         <li key={recipe.id} className="recipe-item">
                                             <h3> {recipe.title} </h3>
                                             <p> Time: {recipe.cookTime} </p>
-                                            <p> Category: {recipe.category} </p>
+                                            <p> Category: {recipe.type} </p>
                                             <button className="view-btn" onClick={() => handleRecipeClick(recipe.id)}>View Recipe</button>
                                         </li>
                                     ))}
