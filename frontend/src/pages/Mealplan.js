@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import parse from 'html-react-parser';
+import { addRecipe } from '../database.js';
 import '../App.css';
 
-export default function Mealplan() {
+export default function Mealplan({ username }) {
   const [showSavePlan, setShowSavePlan] = useState(false);
   const [textInput, setTextInput]       = useState('');
   const [recipes, setRecipes]           = useState({});
@@ -12,9 +13,75 @@ export default function Mealplan() {
     // TODO: implement saving the entire plan
   };
 
-  const SaveRecipe = () => {
-    // TODO: implement saving a single recipe
+  const SaveRecipe = async (recipe) => {
+    console.log("=== SaveRecipe Debug ===");
+    console.log("Raw recipe object:", recipe);
+    console.log("recipe type:", typeof recipe);
+    console.log("recipe.id:", recipe?.id, "type:", typeof recipe?.id);
+    console.log("recipe.title:", recipe?.title, "type:", typeof recipe?.title);
+    console.log("recipe.title === 'NOT FOUND':", recipe?.title === 'NOT FOUND');
+    console.log("recipe.id === 0:", recipe?.id === 0);
+    
+    // Your existing safeguards
+    if (
+      !recipe ||
+      recipe.id === 0 ||  // safeguard for "NOT FOUND" placeholder
+      recipe.title === 'NOT FOUND'
+    ) {
+      console.warn("Attempted to save an invalid or placeholder recipe:", recipe);
+      return;
+    }
+    
+    console.log("Recipe passed validation, proceeding to format...");
+    
+    try {
+      const formattedRecipe = {
+        id: recipe.id,
+        title: recipe.title,
+        type: recipe.type || 'N/A',
+        cookTime: parseInt(recipe.cookTime) || 0,
+        neededIngredients: recipe.neededIngredients.split(',').map(i => i.trim()), // from string to array
+        instructions: recipe.instructions,
+        image: recipe.image
+      };
+      
+      console.log("Formatted recipe:", formattedRecipe);
+      console.log("About to call addRecipe with username:", username);
+      
+      await addRecipe(username, formattedRecipe);
+      alert(`Saved recipe: ${recipe.title}`);
+    } catch (error) {
+      console.error("Error saving recipe:", error);
+      console.error("Full error stack:", error.stack);
+      alert("Failed to save recipe. Please try again.");
+    }
   };
+    // TODO: implement saving a single recipe
+  //   if (
+  //     !recipe ||
+  //     recipe.id === 0 ||  // safeguard for "NOT FOUND" placeholder
+  //     recipe.title === 'NOT FOUND'
+  //   ) {
+  //     console.warn("Attempted to save an invalid or placeholder recipe:", recipe);
+  //     return;
+  //   }
+  //   try {
+  //   const formattedRecipe = {
+  //     id: recipe.id,
+  //     title: recipe.title,
+  //     type: recipe.type || 'N/A',
+  //     cookTime: parseInt(recipe.cookTime) || 0,
+  //     neededIngredients: recipe.neededIngredients.split(',').map(i => i.trim()), // from string to array
+  //     instructions: recipe.instructions,
+  //     image: recipe.image
+  //   };
+  //   await addRecipe(username, formattedRecipe);
+  //   alert(`Saved recipe: ${recipe.title}`);
+  //   } catch (error) {
+  //     console.error("Error saving recipe:", error);
+  //     alert("Failed to save recipe. Please try again.");
+  //   }
+  // };
 
   const scrollTo = (day) => {
     const section = document.getElementById(day);
@@ -161,16 +228,16 @@ export default function Mealplan() {
                   <div className="mealplan-recipes" key={recipe.id}>
                     <div className="recipe-card">
                       <h3 className="text-2xl font-bold">{mealType}</h3>
-                      <img src={recipe.img} alt={recipe.name} />
+                      <img src={recipe.image} alt={recipe.title} />
                       <h3 className="text-2xl font-semibold">
-                        {recipe.name}
+                        {recipe.title}
                       </h3>
                       <h4>Food Type: {recipe.type}</h4>
                       <h4>Time: ~{recipe.cookTime}</h4>
                       <h4>Ingredients: {recipe.neededIngredients}</h4>
                       <p>{parse(recipe.instructions)}</p>
                       <div className="button-list">
-                        <button className="view-btn" onClick={SaveRecipe}>
+                        <button className="view-btn" onClick={() => SaveRecipe(recipe)}>
                           Save Recipe
                         </button>
                       </div>

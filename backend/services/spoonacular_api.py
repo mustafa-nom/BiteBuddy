@@ -22,6 +22,21 @@ def get_recipes_from_keywords(food_keywords, num_recipe_per_keyword):
         print(data)
         recipes = data.get('results', [])
         print(f"Keyword provided: {keyword} \n Recipe got: {recipes}")
+
+        if not recipes:
+            print(f"Spoonacular failed for '{keyword}'")
+            all_recipes.append({
+                'id': 0,
+                'title': "NOT FOUND",
+                'image': "https://ih1.redbubble.net/image.1861329778.2941/st,small,845x845-pad,1000x1000,f8f8f8.jpg",
+                'source_keyword': keyword,
+                'cookTime': f"N/A",
+                'instructions': "N/A",
+                'neededIngredients': "N/A",
+                'type': "N/A"
+            })
+            continue  # skip to next keyword
+
         for recipe in recipes:
             recipe_id = recipe['id']
             info_url = f'https://api.spoonacular.com/recipes/{recipe_id}/information'
@@ -43,6 +58,7 @@ def get_recipes_from_keywords(food_keywords, num_recipe_per_keyword):
             })
 
     return all_recipes
+
 
 def get_weekly_recipes_from_keywords(food_keywords, num_recipe_per_keyword):
     all_recipes = []
