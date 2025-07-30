@@ -202,38 +202,40 @@ export async function getDietaryRestrictions(username) {
   }
 }
 
-export async function addMealPlan(username, mealPlan) {
+export async function saveMealPlan(username, planName, mealPlanData) {
   try {
     const ref = doc(db, 'users', username);
-    await updateDoc(ref, { meal_plans: mealPlan });
-    console.log("Meal plan added!");
-  }
-  catch (err) {
+    // More robust key generation - remove all invalid Firebase characters
+    const key = planName
+      .replace(/[~*\/\[\]]/g, '_')  // Replace invalid Firebase characters
+      .replace(/\s+/g, '_')         // Replace spaces with underscores
+      .replace(/_+/g, '_')          // Replace multiple underscores with single
+      .toLowerCase();
+    
+    console.log("Original plan name:", planName);
+    console.log("Generated key:", key);
+    
+    await updateDoc(ref, {
+      [`meal_plans.${key}`]: {
+        name: planName,
+        createdAt: new Date().toISOString(),
+        recipes: mealPlanData
+      }
+    });
+    console.log("Meal plan saved!");
+  } catch (err) {
     console.error("Something went wrong", err);
+    throw err;
   }
 }
 
-export async function getMealPlans(username) {
+export async function getSavedMealPlans(username) {
   try {
-    const snap = await getDoc(doc(db, 'users', username));
-    if (snap.exists()) {
-      const mealPlans = snap.data().meal_plans;
-      if (!mealPlans) {
-        console.log("No meal plans found for user.");
-        return {};
-      }
-      else {
-        return mealPlans;
-      }
-    } 
-    else {
-      console.log("User does not exist!!!!");
-      return null;
-    }
-  }
-  catch (err) {
-    console.error("Error getting data or meal plan: ", err);
-    return null;
+    const userData = await getUserData(username);
+    return userData?.meal_plans || {};
+  } catch (err) {
+    console.error("Error getting saved meal plans:", err);
+    return {};
   }
 }
 

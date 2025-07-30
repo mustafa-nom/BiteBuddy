@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import parse from 'html-react-parser';
-import { addRecipe } from '../database.js';
+import { addRecipe, saveMealPlan, getSavedMealPlans } from '../database.js';
 import '../App.css';
 
 export default function Mealplan({ username }) {
@@ -9,8 +9,27 @@ export default function Mealplan({ username }) {
   const [recipes, setRecipes]           = useState({});
   const [loading, setLoading]           = useState(false);
 
-  const SavePlan = () => {
+  const SavePlan = async () => {
     // TODO: implement saving the entire plan
+    if (Object.keys(recipes).length === 0) {
+      alert('No meal plan to save. Please generate a meal plan first.');
+      return;
+    }
+  
+    console.log("Recipes to save:", recipes); // This should show the full meal plan object
+    const planName = `Meal Plan - ${new Date().toLocaleDateString()}`;
+
+    try {
+      await saveMealPlan(username, planName, recipes); // Use the new function
+      alert(`Meal plan saved as: ${planName}`);
+      
+      // Verify it was saved
+      const savedPlans = await getSavedMealPlans(username);
+      console.log("All saved meal plans:", savedPlans);
+    } catch (error) {
+      console.error('Failed to save meal plan:', error);
+      alert('Failed to save meal plan. Please try again.');
+    }
   };
 
   const SaveRecipe = async (recipe) => {
@@ -228,14 +247,14 @@ export default function Mealplan({ username }) {
                     <div className="recipe-card" key={`${day}-${mealType}`}>
                     <div className="recipe-image-container">
                         <img 
-                        src={recipe.img} 
-                        alt={recipe.name} 
+                        src={recipe.image} 
+                        alt={recipe.title} 
                         className="recipe-image"
                         />
                     </div>
                     <div className="recipe-content">
                         <h3 className="text-xl font-bold mb-2">{mealType}</h3>
-                        <h3 className="recipe-title">{recipe.name}</h3>
+                        <h3 className="recipe-title">{recipe.title}</h3>
                         <div className="recipe-meta">
                         <span className="recipe-type">{recipe.type}</span>
                         <span className="recipe-time"> ~{recipe.cookTime}</span>
@@ -252,7 +271,7 @@ export default function Mealplan({ username }) {
                         <div className="recipe-actions">
                         <button 
                             className="save-recipe-btn" 
-                            onClick={SaveRecipe}
+                            onClick={() => SaveRecipe(recipe)}
                         >
                             Save Recipe
                         </button>
